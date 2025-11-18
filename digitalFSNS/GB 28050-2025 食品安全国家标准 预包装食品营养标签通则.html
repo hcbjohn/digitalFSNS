@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+            <html lang="zh-CN">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>导出的文档</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <!-- FontAwesome CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <!-- Highlight.js CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+                <!-- KaTeX CSS -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+                <!-- Mermaid JS -->
+                <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+                <!-- Highlight.js JS -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+                <!-- KaTeX JS -->
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+                <style>
+            
+          body { 
+            font-family: system-ui, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+          }
+
+          ul,
+          ol {
+            list-style: revert !important;
+            margin: 10px 10px 10px -26px !important;
+            padding: 0 0 0 48px !important;
+          }
+          li {
+            position: relative;
+          }
+          ol ol {
+            list-style: lower-alpha;
+          }
+
+          ol ol ol {
+            list-style: lower-roman;
+          }
+
+          ul.checkbox_list {
+            padding: 0;
+            margin-left: -24px;
+            margin-right: 0;
+          }
+
+
+          ul li,
+          ol li {
+            position: relative;
+            /* white-space: initial; */
+
+            p {
+              white-space: pre-wrap;
+            }
+
+            > div {
+              width: 100%;
+            }
+          }
+
+          ul.checkbox_list > li {
+            display: flex;
+            list-style: none;
+            margin-left:24px;
+            padding-right: 0;
+          }
+
+          ul > li.counter-2,
+          ol li.counter-2 {
+            &::before {
+              left: -50px;
+            }
+          }
+
+          ul > li.hovering::before,
+          ol li.hovering::before {
+            opacity: 0.5;
+          }
+
+          ul li.ProseMirror-selectednode::after,
+          ol li.ProseMirror-selectednode::after {
+            display: none;
+          }
+
+          ul.checkbox_list > li {
+            &::before {
+              left: 0;
+            }
+          }
+          ul.checkbox_list li .checkbox {
+            display: inline-block;
+            cursor: var(--pointer);
+            pointer-events: "initial";
+            opacity: 1;
+            width: 14px;
+            height: 14px;
+            position: relative;
+            top: 1.5px;
+            transition: transform 100ms ease-in-out;
+            opacity: 0.8;
+            margin: 0 0.5em 0 0;
+
+            &[aria-checked="true"] {
+              @apply bg-zinc-800 dark:bg-zinc-400;
+              opacity: 1;
+            }
+
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+          li p:first-child {
+            margin: 0;
+
+          }
+
+
+          .admonition-content p:first-child {
+            margin-top: 0 !important;
+          }
+          .admonition-content p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          blockquote p:first-child {
+            margin-top: 0 !important;
+          }
+          blockquote p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          p:where(:not(table p):not(li p)) {
+              margin-top: 1.1428571em !important;
+              margin-bottom: 1.1428571em  !important;
+          }
+          @media (min-width: 1024px) {
+            p:where(:not(table p):not(li p)) {
+                margin-top: 1.25em  !important;
+                margin-bottom: 1.25em  !important;
+            }
+          }
+            
+          /* Highlight.js 样式覆盖 */
+          .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 1em;
+            background: transparent !important;
+            color: #24292f;
+            font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+          
+          .hljs-pre {
+            margin: 0;
+            background: transparent;
+          }
+          
+          /* 暗黑模式下的高亮主题调整 */
+          .dark .hljs {
+            background: transparent !important;
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 数学公式样式 */
+          .math-node {
+            font-size: 1.1em;
+          }
+          
+          math-display.math-node {
+            display: block;
+            text-align: center;
+            margin: 1.5em 0;
+            padding: 1em;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+          }
+          
+          .dark math-display.math-node {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+          
+          math-inline.math-node {
+            display: inline;
+            margin: 0 2px;
+          }
+          
+          /* KaTeX 渲染后的样式调整 */
+          .katex-display {
+            margin: 0 !important;
+          }
+          
+          .katex {
+            font-size: 1em !important;
+          }
+          
+          /* KaTeX 明暗主题颜色支持 */
+          .katex,
+          .katex * {
+            color: #24292f !important;
+          }
+          
+          .dark .katex,
+          .dark .katex * {
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 分数线和根号等结构元素颜色 */
+          .katex .frac-line {
+            border-bottom-color: #24292f !important;
+          }
+          
+          .dark .katex .frac-line {
+            border-bottom-color: #e6edf3 !important;
+          }
+          
+          .katex .sqrt .sqrt-line {
+            border-top-color: #24292f !important;
+          }
+          
+          .dark .katex .sqrt .sqrt-line {
+            border-top-color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 积分号、求和号等大型符号的颜色 */
+          .katex .delimsizing,
+          .katex .sizing,
+          .katex .vlist-r {
+            color: inherit !important;
+          }
+          
+          /* KaTeX SVG 路径颜色调整 */
+          .katex svg {
+            color: inherit !important;
+          }
+          
+          .katex svg path {
+            fill: currentColor !important;
+          }
+          
+          .dark .katex svg path {
+            fill: #e6edf3 !important;
+          }
+          
+          /* Mermaid 图表样式 */
+          .mermaid-container {
+            text-align: center;
+          }
+          
+          .mermaid-diagram {
+            display: inline-block;
+            max-width: 100%;
+            overflow-x: auto;
+          }
+          
+          .mermaid {
+            max-width: 100%;
+          }
+          
+          /* 响应式调整 */
+          @media (max-width: 768px) {
+            .hljs {
+              font-size: 13px;
+            }
+            
+            math-display.math-node {
+              margin: 1em 0;
+              padding: 0.8em;
+              font-size: 0.9em;
+            }
+            
+            .mermaid-diagram {
+              font-size: 0.9em;
+            }
+          }
+        
+                </style>
+            </head>
+            <body class="bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400">
+                <div class="mx-auto max-w-4xl overflow-auto">
+            <table class="mt-1 w-full rounded-md" data-node-type="table"><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">项目</p></th><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">信息</p></th></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">标准号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">GB 28050</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">年代号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">名称</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准 预包装食品营养标签通则</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布部门</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">中华人民共和国国家卫生健康委</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025年  第2号</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025-03-16</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">实施日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2027-03-16</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文件类型</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准</p></td></tr></table><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">前言</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准代替GB28050—2011《食品安全国家标准 预包装食品营养标签通则》。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准与GB28050—2011相比，主要变化如下：<br>——修改了标准适用范围；<br>——增加了强制标示的营养素和提示语；<br>——修改了能量和部分营养成分的术语和定义；<br>——修改了可选择标示内容，增加了其他补充信息；<br>——修改了部分营养成分含量的允许误差范围；<br>——修改了豁免强制标示营养标签的预包装食品；<br>——增加了第8章；<br>——修改了部分营养素参考值(NRV)；<br>——修改了营养标签格式；<br>——修改了部分营养声称及营养成分作用声称标准用语；<br>——增加了附录E“预包装食品份量参考值的推荐”。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">1 范围</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准规定了预包装食品营养标签上有关食品营养信息和特性的描述与说明。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准适用于直接提供给消费者的预包装食品营养标签。非直接提供给消费者的预包装食品和食品储运包装，如标示营养标签应按本标准实施。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2 术语和定义</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.1 营养标签</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">预包装食品标签上向消费者提供的有关食品营养信息和特性的描述与说明，包括营养成分表、营养声称和营养成分作用声称及其他补充信息。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">营养标签是预包装食品标签的组成部分。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.2 营养成分表</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">标有食品能量和营养成分名称、含量及其占营养素参考值百分比的规范性表格。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.3 能量</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中蛋白质、脂肪和碳水化合物等成分在人体代谢中产生的热量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中能量的计算根据以下供能成分标示值与相应能量换算系数的乘积加和而得。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">供能成分的能量换算系数分别为(kJ/g)：蛋白质17、脂肪37、碳水化合物17。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">当标示膳食纤维含量时，以 8 kJ/g 为换算系数计算其能量。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.4 营养素</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中具有特定生理作用，能维持机体生长、发育、活动、繁殖及正常代谢所必需的物质，包括蛋白质、脂肪、碳水化合物、矿物质及维生素等。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.5 营养成分</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中具有的营养素和其他有益于生理机能的食物成分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">除以下术语和定义外，其他营养成分的术语和定义参照GB/Z 21922。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.5.1 蛋白质</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中含氮的有机化合物，以氨基酸为基本组成单位。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中蛋白质含量可根据氮含量与蛋白质折算系数乘积或各氨基酸含量总和确定。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.5.2 脂肪和脂肪酸</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪又称甘油三酯，由脂肪酸和甘油结合而成。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪酸是有机酸中链状羧酸的总称，分为饱和脂肪酸和不饱和脂肪酸。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">饱和脂肪酸是碳链上不含双键的脂肪酸总和。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">不饱和脂肪酸是碳链上含有双键的脂肪酸总和，仅包括顺式(cis)结构。碳链上含有一个双键为单不饱和脂肪酸，含有两个及以上双键为多不饱和脂肪酸。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">反式脂肪酸指油脂加工中产生的和天然存在的、含有一个或一个以上非共轭反式(trans)双键的脂肪酸总和。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.5.3 碳水化合物</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">糖、寡糖、多糖的总称。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">每  <math-inline class="math-node inline" data-node-type="math_inline">100\mathrm{g}</math-inline>  或每  <math-inline class="math-node inline" data-node-type="math_inline">100~\mathrm{mL}</math-inline>  食品中碳水化合物含量可采用减法计算而得。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">减法：碳水化合物=水分-灰分-蛋白质-脂肪；当标示膳食纤维含量时，还应减去其含量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">当蛋白质和脂肪含量达到“0”界限值，且碳水化合物来源为糖和(或)淀粉时，也可采用加法。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">加法：碳水化合物=糖+淀粉。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.5.4 糖</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">专用于营养标签标示的糖特指食品中果糖、葡萄糖、蔗糖、麦芽糖、乳糖之和。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.6 营养素参考值(NRV)</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">专用于营养标签比较食品能量和营养素含量水平的参考值。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">营养素参考值根据《中国居民膳食营养素参考摄入量》制定，适用于36月龄以上（&gt;36月龄）人群食用的预包装食品营养标签。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">根据单位质量(每 100 g 、每 100 mL 或每份)食品可食部中营养素含量占营养素参考值(NRV)的百分比，可以计算营养素参考值百分比，记为营养素参考值%或  <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{NRV}\%</math-inline>  。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">营养素参考值(NRV)及其使用方法见附录A。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.7 营养声称</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">对食品营养特性的描述和说明，营养声称包括含量声称和比较声称。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.7.1 含量声称</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">对食品中能量或营养成分含量水平的描述和说明。含量声称用语包括“含有”“来源”“高”“富含”“低”“无”“不含”“瘦”等。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.7.2 比较声称</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">与同类食品相比较，对食品能量或营养成分含量水平变化状况的描述和说明。比较声称用语包括“增加”或“减少”等。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.8 营养成分作用声称</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">对某营养成分维持人体正常生长、发育和生理功能作用的描述和说明。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.9 可食部</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品中可食用的部分，即预包装食品净含量去除其中不可食用部分后的剩余部分。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.10 份量参考值</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">当营养标签按“份”标示营养成分表时，推荐使用的每份食品参考质量或体积（以可食部计）。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.11 修约间隔</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">修约值的最小数值单位。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3 基本要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.1 预包装食品应标示营养标签，所标示的任何营养信息和特性说明应真实、客观，不得标示虚假信息，不得夸大产品的营养作用或其他作用。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.2 预包装食品营养标签应使用规范的汉字。如同时使用少数民族文字、外文等，其内容应当与汉字含义一致，字高不得大于汉字的字高。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.3 营养成分表应清晰、醒目、持久，以“方框表”的形式标示（特殊情况除外），需与包装或标签的基线垂直，表头为“营养成分表”。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.4 营养成分表中能量和营养成分含量应以每100克(g)和/或每100毫升(mL)和/或每份可食部中具体数值标示；以每份进行标示时，应在同一版面标明每份食品的质量或体积。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.5 营养标签应符合附录B的格式规范，食品企业可根据食品营养特性、包装面积大小和形状等因素进行选择。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.6 营养标签应标示在向消费者提供的最小销售单元的包装上。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">3.7 进口预包装食品的营养标签标示内容应符合本标准的规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4 强制标示内容</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.1 预包装食品营养标签强制标示的内容包括能量、蛋白质、脂肪、饱和脂肪（或饱和脂肪酸）、碳水化合物、糖和钠的含量及其占营养素参考值百分比。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2 当对 4.1 以外的营养成分进行营养声称或营养成分作用声称时，应在营养成分表中标示出该营养成分的含量及其占营养素参考值百分比。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.3 当预包装食品使用了营养强化剂，应在营养成分表中标示出强化营养成分的含量及其占营养素参考值百分比。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.4 当食品或其配料生产过程中使用了氢化和/或部分氢化油脂时，应在营养成分表中标示出反式脂肪酸的含量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.5 预包装食品应在营养成分表下方标示“儿童青少年应避免过量摄入盐油糖”。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5 可选择标示内容</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.1 营养成分</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">鼓励在营养成分表中标示维生素A、维生素  <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{B_1}</math-inline>  、维生素  <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{B_2}</math-inline>  、钙、铁、锌，以及表1中列出的其他成分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 1 能量和营养成分的名称和顺序、表达单位、修约间隔和“0”界限值</p><div data-node-type="html_block"><table><tbody><tr><td>能量和营养成分的名称和顺序<sup>a</sup></td><td>表达单位<sup>b</sup></td><td>修约间隔<sup>c</sup></td><td>“0”界限值(每100g或100mL)</td></tr><tr><td>能量</td><td>千焦(kJ)</td><td>1</td><td>≤17 千焦(kJ)</td></tr><tr><td>蛋白质</td><td>克(g)</td><td>0.1</td><td>≤0.5 克(g)</td></tr><tr><td>脂肪</td><td>克(g)</td><td>0.1</td><td>≤0.5 克(g)</td></tr><tr><td>——饱和脂肪(或饱和脂肪酸)</td><td>克(g)</td><td>0.1</td><td>≤0.1 克(g)</td></tr><tr><td>——反式脂肪酸</td><td>克(g)</td><td>0.1</td><td>≤0.3克(g)</td></tr><tr><td>——单不饱和脂肪(或单不饱和脂肪酸)</td><td>克(g)</td><td>0.1</td><td>≤0.1克(g)</td></tr><tr><td>——多不饱和脂肪(或多不饱和脂肪酸)</td><td>克(g)</td><td>0.1</td><td>≤0.1克(g)</td></tr><tr><td>——n-3多不饱和脂肪酸(或ω-3多不饱和脂肪酸)</td><td>毫克(mg)</td><td>1</td><td>≤20毫克(mg)</td></tr><tr><td>——α-亚麻酸</td><td>毫克(mg)</td><td>1</td><td>≤5毫克(mg)</td></tr><tr><td>——二十碳五烯酸(EPA)</td><td>毫克(mg)</td><td>1</td><td>≤5毫克(mg)</td></tr><tr><td>——二十二碳六烯酸(DHA)</td><td>毫克(mg)</td><td>1</td><td>≤5毫克(mg)</td></tr><tr><td>胆固醇</td><td>毫克(mg)</td><td>1</td><td>≤5毫克(mg)</td></tr><tr><td>碳水化合物</td><td>克(g)</td><td>0.1</td><td>≤0.5克(g)</td></tr><tr><td>——糖</td><td>克(g)</td><td>0.1</td><td>≤0.5克(g)</td></tr><tr><td>——乳糖</td><td>克(g)</td><td>0.1</td><td>≤0.5克(g)</td></tr><tr><td>膳食纤维[或可溶性膳食纤维、不溶性膳食纤维、膳食纤维(以单体成分计)]</td><td>克(g)</td><td>0.1</td><td>≤0.5克(g)</td></tr><tr><td>钠</td><td>毫克(mg)</td><td>1</td><td>≤5毫克(mg)</td></tr><tr><td>维生素A</td><td>微克视黄醇当量(μgRE)</td><td>1</td><td>≤10微克视黄醇当量(μgRE)</td></tr><tr><td>维生素D</td><td>微克(μg)</td><td>0.1</td><td>≤0.1微克(μg)</td></tr><tr><td>维生素E</td><td>毫克α-生育酚当量(mgα-TE)</td><td>0.01</td><td>≤0.20毫克α-生育酚当量(mgα-TE)</td></tr><tr><td>维生素K</td><td>微克(μg)</td><td>0.1</td><td>≤1.6微克(μg)</td></tr><tr><td>维生素B<sub>1</sub>(硫胺素)</td><td>毫克(mg)</td><td>0.01</td><td>≤0.03毫克(mg)</td></tr><tr><td>维生素B<sub>2</sub>(核黄素)</td><td>毫克(mg)</td><td>0.01</td><td>≤0.03毫克(mg)</td></tr><tr><td>维生素B<sub>6</sub></td><td>毫克(mg)</td><td>0.01</td><td>≤0.03毫克(mg)</td></tr><tr><td>维生素B<sub>12</sub></td><td>微克(μg)</td><td>0.01</td><td>≤0.10微克(μg)</td></tr><tr><td>维生素C(抗坏血酸)</td><td>毫克(mg)</td><td>0.1</td><td>≤2.0毫克(mg)</td></tr><tr><td>烟酸(烟酰胺)</td><td>毫克(mg)</td><td>0.1</td><td>≤0.3毫克(mg)</td></tr><tr><td>叶酸</td><td>微克或微克叶酸当量(μg或μgDFE)</td><td>1</td><td>≤8微克(μg)</td></tr><tr><td>泛酸</td><td>毫克(mg)</td><td>0.01</td><td>≤0.10毫克(mg)</td></tr><tr><td>生物素</td><td>微克(μg)</td><td>0.1</td><td>≤0.6微克(μg)</td></tr><tr><td>胆碱</td><td>毫克(mg)</td><td>0.1</td><td>≤9.0毫克(mg)</td></tr><tr><td>钙</td><td>毫克(mg)</td><td>1</td><td>≤8毫克(mg)</td></tr><tr><td>磷</td><td>毫克(mg)</td><td>1</td><td>≤14毫克(mg)</td></tr><tr><td>钾</td><td>毫克(mg)</td><td>1</td><td>≤20毫克(mg)</td></tr><tr><td>镁</td><td>毫克(mg)</td><td>1</td><td>≤3毫克(mg)</td></tr><tr><td>铁</td><td>毫克(mg)</td><td>0.1</td><td>≤0.3毫克(mg)</td></tr><tr><td>锌</td><td>毫克(mg)</td><td>0.01</td><td>≤0.10毫克(mg)</td></tr><tr><td>碘</td><td>微克(μg)</td><td>0.1</td><td>≤3.0微克(μg)</td></tr><tr><td>硒</td><td>微克(μg)</td><td>0.1</td><td>≤1.0微克(μg)</td></tr><tr><td>铜</td><td>毫克(mg)</td><td>0.01</td><td>≤0.03毫克(mg)</td></tr><tr><td>氟</td><td>毫克(mg)</td><td>0.01</td><td>≤0.02毫克(mg)</td></tr><tr><td>锰</td><td>毫克(mg)</td><td>0.01</td><td>≤0.06毫克(mg)</td></tr><tr><td colspan="4"><sup>a</sup>营养成分可以选择括号内外任一名称进行标示,当有“或”字时仅可选其一。<br><sup>b</sup>营养成分的表达单位可选择括号内外任意一种或两者同时使用。<br><sup>c</sup>能量和营养成分含量标示值应为修约间隔的整数倍。</td></tr></tbody></table></div><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.2 营养声称</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">当能量或某营养成分含量标示值符合表C.1的含量要求和限制性条件时，可对能量或该营养成分进行含量声称；符合表C.2的要求和条件时，可对能量或该营养成分进行比较声称；同时符合含量声称和比较声称的要求时，可以使用其中一种或者同时使用两种声称方式。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.3 营养成分作用声称</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">当能量或某营养成分的含量标示值符合营养声称要求和条件时，可使用附录D中相应一条或多条作用声称标准用语。不得对营养成分作用声称用语进行任何形式的删改、添加和合并。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.4 份量标示</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">按“份”标示预包装食品中能量和营养成分含量时，每份食品的质量或体积可按类别参考附录E推荐的食品份量参考值进行标示。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.5 其他补充信息</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">允许采用图形、文字等方式对以下信息进行补充说明。<br>——描述能量时，允许使用“卡”“千卡”“卡路里”等文字进行说明。<br>——描述钠含量时，允许使用“盐”字进行说明。<br>——描述脂肪含量时，允许使用“油”“脂”等文字进行说明。<br>——可以使用“中国居民膳食指南”的宝塔图形和核心推荐条目。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">6 能量和营养成分的标示与表达方式</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.1 营养成分表中能量和营养成分的名称和顺序、表达单位、修约间隔、“0”界限值应符合表1的规定，当不标示某一营养成分时依序上移。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.2 当标示 4.1 以外的营养成分时，应采取增大字号、改变字体（如斜体、加粗、加黑）或调整颜色（文字或背景颜色）等形式使 4.1 强制标示内容更加醒目。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.3 当标示 GB 14880 和有关公告中允许强化的表 1 以外的其他营养成分时,其排列顺序应位于表 1 所列营养成分之后。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.4 营养成分含量标示值的确定，可以采用现行有效的标准方法测定获得，也可根据配方原料组成利用《中国食物成分表》及其他来源可信的数据计算获得。判定营养成分含量标示值准确性时，宜综合考虑标示值的确定方法。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.5 当每  <math-inline class="math-node inline" data-node-type="math_inline">100\mathrm{g}</math-inline>  或  <math-inline class="math-node inline" data-node-type="math_inline">100\mathrm{mL}</math-inline>  食品中能量或某营养成分含量小于或等于表1规定的“0”界限值时，应标示为“0”。当使用“每份”标示营养成分含量时，也依此进行判断。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.6 营养声称、营养成分作用声称的字高不得超过食品名称的最大字高。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.7 在产品保质期内，食品中能量和营养成分的实际测量值或计算值，与标示值的允许误差应符合表2的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 2 能量和营养成分含量的允许误差范围</p><div data-node-type="html_block"><table><tbody><tr><td>能量和营养成分</td><td>允许误差范围</td></tr><tr><td>食品的蛋白质,多不饱和及单不饱和脂肪(或多不饱和及单不饱和脂肪酸),碳水化合物,膳食纤维[或可溶性膳食纤维、不溶性膳食纤维、膳食纤维(以单体成分计)],维生素,矿物质(不包括钠),强化的其他营养成分</td><td>≥80%标示值</td></tr><tr><td>食品的能量以及脂肪,饱和脂肪(饱和脂肪酸),反式脂肪酸,胆固醇,钠,糖</td><td>≤120%标示值</td></tr></tbody></table></div><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7 豁免强制标示营养标签的预包装食品</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">下列预包装食品豁免强制标示：<br>——生鲜食品和粮食籽粒，如畜禽肉、鱼虾蟹贝、鲜蛋、蔬菜水果、菌藻类等；<br>——经简单物理处理、未添加其他配料的单一原料干制品，如谷物和杂粮等；<br>——包装饮用水、茶叶；<br>——酒精度在  <math-inline class="math-node inline" data-node-type="math_inline">0.5\% \mathrm{vol}</math-inline>  以上的饮料酒；<br>——每日食用量  <math-inline class="math-node inline" data-node-type="math_inline">\leqslant 10\mathrm{g(mL)}</math-inline>  的预包装食品和单一原料调味品；<br>——包装物或包装容器的最大表面面积  <math-inline class="math-node inline" data-node-type="math_inline">\leqslant 40\mathrm{cm}^2</math-inline>  的食品；<br>——其他法律法规和食品安全国家标准规定可以不标示营养标签的预包装食品。<br>上述豁免强制标示营养标签的预包装食品，如标示营养标签应按照本标准执行。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8 其他</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">特殊膳食用食品营养标签的标示范围及标示方式按照GB13432执行。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录A 营养标签用营养素参考值（NRV）及其使用方法</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">A.1 营养标签用营养素参考值(NRV)</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">规定的能量和31种营养素参考值如表A.1所示。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 A. 1 营养素参考值(NRV)</p><div data-node-type="html_block"><table><tbody><tr><td>能量和营养成分</td><td>NRV</td></tr><tr><td>能量<sup>a</sup></td><td>8400 kJ</td></tr><tr><td>蛋白质</td><td>60 g</td></tr><tr><td>脂肪</td><td>60 g</td></tr><tr><td>饱和脂肪</td><td>20 g</td></tr><tr><td>碳水化合物</td><td>300 g</td></tr><tr><td>膳食纤维<sup>b</sup></td><td>25 g</td></tr><tr><td>维生素A</td><td>800 μg RE</td></tr><tr><td>维生素D</td><td>10 μg</td></tr><tr><td>维生素E</td><td>14 mg α-TE</td></tr><tr><td>维生素K</td><td>80 μg</td></tr><tr><td>维生素B<sub>1</sub></td><td>1.4 mg</td></tr><tr><td>维生素B<sub>2</sub></td><td>1.4 mg</td></tr><tr><td>维生素B<sub>6</sub></td><td>1.4 mg</td></tr><tr><td>维生素B<sub>12</sub></td><td>2.4 μg</td></tr><tr><td>维生素C</td><td>100 mg</td></tr><tr><td>烟酸</td><td>14 mg</td></tr><tr><td>叶酸</td><td>400 μg (或 μg DFE)</td></tr><tr><td>泛酸</td><td>5 mg</td></tr><tr><td>生物素</td><td>40 μg</td></tr><tr><td>胆碱</td><td>500 mg</td></tr><tr><td>钙</td><td>800 mg</td></tr><tr><td>磷</td><td>700 mg</td></tr><tr><td>钾</td><td>2 000 mg</td></tr><tr><td>钠<sup>c</sup></td><td>2 000 mg</td></tr><tr><td>镁</td><td>300 mg</td></tr><tr><td>铁</td><td>15 mg</td></tr><tr><td>锌</td><td>11 mg</td></tr><tr><td>碘</td><td>120 μg</td></tr><tr><td>硒</td><td>60 μg</td></tr><tr><td>铜</td><td>0.8 mg</td></tr><tr><td>氟</td><td>1 mg</td></tr><tr><td>锰</td><td>3 mg</td></tr><tr><td colspan="2"><p><sup>a</sup> 能量 8 400 kJ 相当于 2 000 kcal。</p><p><sup>b</sup> 以可溶性膳食纤维、不溶性膳食纤维、膳食纤维(以单体成分计)进行含量标示时均采用膳食纤维的 NRV。</p><p><sup>c</sup> 使用“盐”字描述钠含量时,可根据 2 000 mg 钠相当于 5 g 盐进行换算。</p></td></tr></tbody></table></div><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">A.2 使用目的和方式</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">使用目的为用于描述食品中能量或营养成分含量水平的参考值；可作为营养声称时的比较基准。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">使用方式为计算食品中能量或营养成分含量占营养素参考值的百分比，计为“营养素参考值%”或“ <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{NRV}\%</math-inline> ”。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">A.3 营养素参考值百分比的计算</span></h2><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">A.3.1 计算</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">营养素参考值百分比的计算见式(A.1)：</p><math-display class="math-node block text-center my-4 lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="math_display">\mathrm{NRV}\% = \frac{X}{\mathrm{NRV}}\times 100\% \tag{A.1}</math-display><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">式中：<br>NRV%——单位质量食品(以可食部计)中营养素含量占该营养素参考值的百分比；<br><math-inline class="math-node inline" data-node-type="math_inline">X</math-inline>  ——单位质量食品（以可食部计）中营养素含量标示值；<br>NRV ——该营养素参考值。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">A.3.2 结果表达</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph"><math-inline class="math-node inline" data-node-type="math_inline">\mathrm{NRV}\%</math-inline>  的修约间隔为1。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">未规定营养素参考值(NRV)的营养成分，不做  <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{NRV}\%</math-inline>  计算。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录B 营养标签格式规范</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.1 本附录规定了预包装食品营养标签的格式。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2 应选择以下任一格式进行营养标签的设计制作。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.3 在保证符合基本格式要求和确保不对消费者造成误导的基础上，在版面设计时可进行适当调整，包括但不限于：因美观要求或为便于消费者观察而调整文字格式（左对齐、居中等）、背景和表格颜色或适当增加或减少内框线等。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.4 用“份”标示时，应在营养成分表同一版面注明每份质量或体积，如“每份  <math-inline class="math-node inline" data-node-type="math_inline">\times \times</math-inline>  克(g)”或“每份  <math-inline class="math-node inline" data-node-type="math_inline">\times \times</math-inline>  毫升(mL)”;也可以同时标注提供此质量的最小单元，如“每份  <math-inline class="math-node inline" data-node-type="math_inline">\times \times</math-inline>  克(g)/×片”或“每份  <math-inline class="math-node inline" data-node-type="math_inline">\times \times</math-inline>  克(g)/×勺”等。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.5 能量和营养成分的含量以具体数值标示; 其营养素参考值%或NRV%可标示为“×”或“×%”; 对于未规定营养素参考值(NRV)的营养成分, 其营养素参考值%或NRV%可以为空白, 也可以用横线、斜线方式表达。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.6 示例中出现“或”字时，可以选择其一或者同时选择标注，如“千焦 kJ”“千焦/kJ”“千焦(kJ)”。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.7 营养成分表下也可补充说明所列能量和营养素的营养素参考值。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例1：仅标示强制内容<br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>每100克(g)或100毫升(mL)或每份</td><td>营养素参考值%或NRV%</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td></tr><tr><td>碳水化合物</td><td>克或g</td><td></td></tr><tr><td>一糖</td><td>克或g</td><td></td></tr><tr><td>钠</td><td>毫克或mg</td><td></td></tr><tr><td colspan="3">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：用语“儿童青少年应避免过量摄入盐油糖。”可以标示在营养成分表下方居左、居中或居右位置，可有框或无框。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例2：同时以每100克(或每100毫升)和每份为单位进行标示<br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>每100克(g)或100毫升(mL)</td><td>营养素参考值%或NRV%</td><td>每份[每份××克(g)或每份××毫升(mL)]</td><td>营养素参考值%或NRV%</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td><td>千焦或kJ</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>碳水化合物</td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>一糖</td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>钠</td><td>毫克或mg</td><td></td><td>毫克或mg</td><td></td></tr><tr><td colspan="5">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：每份的质量或体积可标示在同一版面的表格内外。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例3：标示更多营养成分<br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>每100克(g)或100毫升(mL)或每份</td><td>营养素参考值%或NRV%</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td></tr><tr><td>一反式脂肪酸</td><td>克或g</td><td></td></tr><tr><td>胆固醇</td><td>毫克或mg</td><td></td></tr><tr><td>碳水化合物</td><td>克或g</td><td></td></tr><tr><td>一糖</td><td>克或g</td><td></td></tr><tr><td>一乳糖</td><td>克或g</td><td></td></tr><tr><td>膳食纤维</td><td>克或g</td><td></td></tr><tr><td>钠</td><td>毫克或mg</td><td></td></tr><tr><td>维生素D</td><td>微克或μg</td><td></td></tr><tr><td>维生素B2</td><td>毫克或mg</td><td></td></tr><tr><td>维生素B6</td><td>毫克或mg</td><td></td></tr><tr><td>铁</td><td>毫克或mg</td><td></td></tr><tr><td>锌</td><td>毫克或mg</td><td></td></tr><tr><td colspan="3">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例4：同时标示外文<br>营养成分表 nutrition information</p><div data-node-type="html_block"><table><tbody><tr><td>项目/Items</td><td>每100克(g)或100毫升(mL)或每份 /per 100 g or per 100 mL or per serving</td><td>NRV %</td></tr><tr><td>能量/energy</td><td>千焦(kJ)或kJ</td><td></td></tr><tr><td>蛋白质/protein</td><td>克(g)或g</td><td></td></tr><tr><td>脂肪/fat</td><td>克(g)或g</td><td></td></tr><tr><td>一饱和脂肪/saturated fat</td><td>克(g)或g</td><td></td></tr><tr><td>碳水化合物/carbohydrate</td><td>克(g)或g</td><td></td></tr><tr><td>一糖/sugars</td><td>克(g)或g</td><td></td></tr><tr><td>钠/sodium</td><td>毫克(mg)或mg</td><td></td></tr><tr><td colspan="3">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：外文字符除表达单位外大小写不限。如需标示少数民族文字，可书写在示例中相应的外文位置。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例5：横排格式<br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>每100克(g)或100毫升(mL)或每份</td><td>营养素参考值%或NRV %</td><td>项目</td><td>每100克(g)或100毫升(mL)或每份</td><td>营养素参考值%或NRV %</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td><td>碳水化合物</td><td>克或g</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td><td>一糖</td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td><td>钠</td><td>毫克或mg</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td><td></td><td></td><td></td></tr><tr><td colspan="6">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：根据包装特点，可将营养成分表分成两列或以上进行标示，营养成分的顺序可以从左到右横向排开或者自上而下纵向排开，列间有或无纵向框线均可。<br>预包装食品包装物或包装容器的最大表面面积  <math-inline class="math-node inline" data-node-type="math_inline">\leqslant 40\mathrm{cm}^2</math-inline>  的食品，如进行营养成分标示，允许使用非表格的文字格式(见示例6)，并可省略营养素参考值%或NRV%的标示。根据包装特点，营养成分可以从左向右横向排开或者自上而下排开，可有框或无框。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例6：文字格式</p><div data-node-type="html_block"><table><tbody><tr><td>营养成分/100克(g)或100毫升(mL)或每份:能量××kJ,蛋白质××g,脂肪××g,饱和脂肪××g,碳水化合物××g,糖××g,钠××mg。</td></tr><tr><td>儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例7：附有营养声称和(或)营养成分作用声称的格式<br>低脂肪<br>每日膳食中脂肪提供的能量比例不宜超过总能量的  <math-inline class="math-node inline" data-node-type="math_inline">30\%</math-inline><br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>每100克(g)或100毫升(mL)或每份</td><td>营养素参考值%或NRV%</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td></tr><tr><td>碳水化合物</td><td>克或g</td><td></td></tr><tr><td>一糖</td><td>克或g</td><td></td></tr><tr><td>钠</td><td>毫克或mg</td><td></td></tr><tr><td colspan="3">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：根据包装特点，营养声称和(或)营养成分作用声称可标示在食品标签任意位置。<br>销售单元内包含多品种或多口味食品时，可以统一制作一个营养标签；如各有独立包装也可以分别标示营养标签；或在同一销售单元包装上并列标示各食品的营养标签（示例8为并列标示各食品的营养标签举例）。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">示例8：内有多种食品的营养标签格式<br>营养成分表</p><div data-node-type="html_block"><table><tbody><tr><td rowspan="2">项目</td><td colspan="2">食品A名称</td><td colspan="2">食品B名称</td><td colspan="2">食品C名称</td></tr><tr><td>每100克(g)或100营养素参考值%毫升(mL)或每份</td><td>或NRV% 毫升(mL)或每份</td><td>每100克(g)或100营养素参考值%毫升(mL)或每份</td><td>或NRV% 毫升(mL)或每份</td><td>每100克(g)或100营养素参考值%毫升(mL)或每份</td><td>或NRV% 毫升(mL)或每份</td></tr><tr><td>能量</td><td>千焦或kJ</td><td></td><td>千焦或kJ</td><td></td><td>千焦或kJ</td><td></td></tr><tr><td>蛋白质</td><td>克或g</td><td></td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>脂肪</td><td>克或g</td><td></td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>一饱和脂肪</td><td>克或g</td><td></td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>碳水化合物</td><td>克或g</td><td></td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>一糖</td><td>克或g</td><td></td><td>克或g</td><td></td><td>克或g</td><td></td></tr><tr><td>钠</td><td>毫克或mg</td><td></td><td>毫克或mg</td><td></td><td>毫克或mg</td><td></td></tr><tr><td colspan="7">儿童青少年应避免过量摄入盐油糖。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：同一包装内含有消费者自行添加的食品配料时(如调料包等),也可采用本方法进行标示。<br>食品间有或无纵向框线均可。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录C 能量和营养成分含量声称和比较声称的要求、条件和同义语</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">C.1 表 C.1 规定了预包装食品能量和营养成分含量声称的要求和限制性条件。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 C.1 能量和营养成分含量声称的要求和限制性条件</p><div data-node-type="html_block"><table><tbody><tr><td>项目</td><td>含量声称方式<sup>a</sup></td><td>含量要求<sup>b</sup></td><td>限制性条件</td></tr><tr><td rowspan="2">能量</td><td>无能量或无卡、无千卡或无卡路里</td><td>≤17 kJ/100 g(固体)或100 mL(液体)</td><td rowspan="2">脂肪供能比≤50%</td></tr><tr><td>低能量或低卡、低千卡或低卡路里</td><td>≤170 kJ/100 g(固体)≤80 kJ/100 mL(液体)</td></tr><tr><td rowspan="2">蛋白质</td><td>蛋白质来源或含有蛋白质</td><td>每100g的含量≥10%NRV(固体)每100mL的含量≥5%NRV(液体)或每420 kJ的含量≥5%NRV</td><td></td></tr><tr><td>高或富含蛋白质</td><td>每100g的含量≥20%NRV(固体)每100mL的含量≥10%NRV(液体)或每420 kJ的含量≥10%NRV</td><td></td></tr><tr><td rowspan="9">脂肪</td><td>无或不含脂肪</td><td>≤0.5 g/100 g(固体)或100 mL(液体)</td><td></td></tr><tr><td>低脂肪</td><td>≤3 g/100 g(固体)≤1.5 g/100 mL(液体)</td><td></td></tr><tr><td>瘦</td><td>脂肪含量≤10 g/100 g</td><td>仅指畜肉类和禽肉类</td></tr><tr><td>脱脂</td><td>≤0.5 g/100g(液体乳)≤1.5 g/100g(乳粉)</td><td>其他乳制品应符合相应食品安全国家标准</td></tr><tr><td>无或不含饱和脂肪</td><td>≤0.1 g/100 g(固体)或100 mL(液体)</td><td></td></tr><tr><td>低饱和脂肪</td><td>≤1.5 g/100 g(固体)≤0.75 g/100 mL(液体)</td><td>饱和脂肪供能比≤10%</td></tr><tr><td>无或不含反式脂肪酸</td><td>≤0.3 g/100 g(固体)或100 mL(液体)</td><td></td></tr><tr><td>n-3多不饱和脂肪酸来源或含有n-3多不饱和脂肪酸c</td><td>α-亚麻酸≥0.3 g/100 g(固体)或100 mL(液体)或EPA和DHA总和≥40 mg/100 g(固体)或100 mL(液体)</td><td></td></tr><tr><td>高或富含n-3多不饱和脂肪酸</td><td>α-亚麻酸≥0.6 g/100 g(固体)或100 mL(液体)或者EPA和DHA总和≥80 mg/100 g(固体)或100 mL(液体)</td><td></td></tr><tr><td rowspan="2">胆固醇</td><td>无或不含胆固醇</td><td>≤5 mg/100 g(固体)或100 mL(液体)</td><td rowspan="2">应同时符合低饱和脂肪的含量要求和限制性条件</td></tr><tr><td>低胆固醇</td><td>≤20 mg/100 g(固体)≤10 mg/100 mL(液体)</td></tr><tr><td rowspan="2">糖</td><td>无或不含糖</td><td>≤0.5 g/100 g(固体)或100 mL(液体)</td><td rowspan="2"></td></tr><tr><td>低糖</td><td>≤5 g/100 g(固体)或100 mL(液体)</td></tr><tr><td rowspan="2">乳糖</td><td>无乳糖</td><td>≤0.5 g/100 g(mL)</td><td rowspan="2">仅指乳品类</td></tr><tr><td>低乳糖</td><td>≤2 g/100 g(mL)</td></tr><tr><td rowspan="2">膳食纤维</td><td>膳食纤维来源或含有膳食纤维</td><td>≥3 g/100 g(固体)≥1.5 g/100 mL(液体)或≥1.5 g/420 kJ</td><td rowspan="2">膳食纤维总量符合含量要求;或者可溶性膳食纤维、不溶性膳食纤维、膳食纤维单体成分符合含量要求</td></tr><tr><td>高或富含膳食纤维</td><td colspan="1">≥6 g/100 g(固体)≥3 g/100 mL(液体)或≥3 g/420 kJ</td></tr><tr><td rowspan="3">钠</td><td>无或不含钠</td><td>≤5 mg/100 g(固体)或100 mL(液体)</td><td rowspan="3">符合“钠”声称时,也可用“盐”字代替“钠”字,如“低盐”等</td></tr><tr><td>极低钠或极少钠</td><td colspan="1">≤40 mg/100 g(固体)或100 mL(液体)</td></tr><tr><td>低钠</td><td colspan="1">≤120 mg/100 g(固体)或100 mL(液体)</td></tr><tr><td rowspan="2">维生素</td><td>维生素X来源或含有维生素X</td><td>每100g中≥15%NRV(固体)每100mL中≥7.5%NRV(液体)或每420kJ中≥5%NRV</td><td>含有“多种维生素”指3种及以上维生素含量符合“含有”的声称要求</td></tr><tr><td>高或富含维生素X</td><td>每100g中≥30%NRV(固体)每100mL中≥15%NRV(液体)或每420kJ中≥10%NRV</td><td colspan="1">富含“多种维生素”指3种及以上维生素含量符合“富含”的声称要求</td></tr><tr><td rowspan="2">矿物质(不包括钠)</td><td>X来源,或含有X</td><td>每100g中≥15%NRV(固体)每100mL中≥7.5%NRV(液体)或每420kJ中≥5%NRV</td><td>含有“多种矿物质”指3种及以上矿物质含量符合“含有”的声称要求</td></tr><tr><td>高或富含X</td><td>每100g中≥30%NRV(固体)每100mL中≥15%NRV(液体)或每420kJ中≥10%NRV</td><td colspan="1">富含“多种矿物质”指3种及以上矿物质含量符合“富含”的声称要求</td></tr><tr><td colspan="4"><sup>a</sup>“无”“不含”的同义语有“零(0)”“没有”。“低”的同义语有“少”。“来源”“含有”的同义语有“提供”“含”“有”;“高”“富含”的同义语有“良好来源”“含丰富××”“丰富(的)××”“富”。<br><sup>b</sup>用“份”作为食品计量单位时,也应符合100g(mL)或420kJ的含量要求才可以进行声称;半固体或固液混合食品采用100g(mL)进行含量声称时应与净含量的计量单位保持一致。c“n-3多不饱和脂肪酸”也可以用“ω-3多不饱和脂肪酸”标示。</td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">C.2 表 C.2 规定了预包装食品能量和营养成分比较声称的要求和条件。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 C.2 能量和营养成分比较声称的要求和条件</p><div data-node-type="html_block"><table><tbody><tr><td>比较声称方式<sup>a</sup></td><td>要求</td><td>条件</td></tr><tr><td>减少能量</td><td>与参考食品比较,能量值减少25%以上(含25%)</td><td rowspan="9">参考食品的数据来源:1.同一企业同类或同一属类食品的营养成分含量或2.《中国食物成分表》中同类食品营养成分含量</td></tr><tr><td>减少脂肪</td><td>与参考食品比较,脂肪含量减少25%以上(含25%)</td></tr><tr><td>减少饱和脂肪</td><td>与参考食品比较,饱和脂肪含量减少25%以上(含25%)</td></tr><tr><td>减少糖</td><td>与参考食品比较,糖含量减少25%以上(含25%)</td></tr><tr><td>减少钠(盐)</td><td>与参考食品比较,钠含量减少25%以上(含25%)</td></tr><tr><td>增加蛋白质</td><td>与参考食品比较,蛋白质含量增加25%以上(含25%)</td></tr><tr><td>增加膳食纤维</td><td>与参考食品比较,膳食纤维含量增加25%以上(含25%)</td></tr><tr><td>增加维生素</td><td>与参考食品比较,维生素含量增加25%以上(含25%)</td></tr><tr><td>增加矿物质(不包括钠)</td><td>与参考食品比较,矿物质含量增加25%以上(含25%)</td></tr><tr><td colspan="3"><sup>a</sup>“减少”的同义语有“减”“减低”或“减少×%”“减×%”“减低×%”“降×%”“降低×%”;“增加”的同义语有“增”“加”“增高”或“增加×%(×倍)”“增×%(×倍)”“加×%(×倍)”“增高(了)×%(×倍)”“多×%”“提高×倍”。</td></tr></tbody></table></div><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录D 能量和营养成分作用声称标准用语</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本附录规定了能量和营养成分作用声称标准用语。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.1 能量</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">人体需要能量来维持生命活动。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">机体的生长发育和一切活动都需要能量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">适当的能量可以保持良好的健康状况。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">能量摄入过高、缺少运动与超重和肥胖有关。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.2 蛋白质</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质是人体的主要构成物质并提供多种氨基酸。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质是人体生命活动中必需的重要物质，有助于组织的形成和生长。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质构成人体组织的重要成分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质有助于组织的形成、修复。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质是组织形成和生长的主要营养素。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">蛋白质有助于肌肉的增长和维持。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.3 脂肪</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪提供高能量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">每日膳食中脂肪提供的能量比例不宜超过总能量的  <math-inline class="math-node inline" data-node-type="math_inline">30\%</math-inline>  。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪是人体的重要组成成分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪可辅助脂溶性维生素的吸收。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">脂肪提供人体必需脂肪酸。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">长期高脂肪摄入不利于维持正常体重和体脂水平。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.3.1 饱和脂肪</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">饱和脂肪可促进食品中胆固醇的吸收。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">长期过多摄入饱和脂肪可使血胆固醇增高。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">饱和脂肪的摄入量应少于每日总能量的  <math-inline class="math-node inline" data-node-type="math_inline">10\%</math-inline>  。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.3.2 反式脂肪酸</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">每天摄入反式脂肪酸不应超过  <math-inline class="math-node inline" data-node-type="math_inline">2.2\mathrm{g}</math-inline> ，过多摄入有害健康。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">反式脂肪酸摄入量应少于每日总能量的  <math-inline class="math-node inline" data-node-type="math_inline">1\%</math-inline>  。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">过多摄入反式脂肪酸可增加心血管疾病发生的风险。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.3.3  <math-inline class="math-node inline" data-node-type="math_inline">\alpha</math-inline> -亚麻酸</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph"><math-inline class="math-node inline" data-node-type="math_inline">\alpha</math-inline>  亚麻酸是人体必需脂肪酸。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.4 糖</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">糖是提供能量的基本物质。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">长期高糖摄入可增加龋齿和肥胖发生的风险。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.5 膳食纤维</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">膳食纤维是低能量物质。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">膳食纤维有助于维持正常的肠道功能。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.6 钠</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">钠能调节机体水分、维持酸碱平衡。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">成人每日食盐的摄入量不宜超过  <math-inline class="math-node inline" data-node-type="math_inline">5\mathrm{g}</math-inline>  。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">长期高盐摄入可以导致血压升高。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.7 维生素A</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">维生素A有助于维持暗视力。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">维生素A有助于维持皮肤和黏膜健康。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">维生素A有助于维持正常视力。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">维生素A有助于维持免疫系统的正常生理功能。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">D.8 维生素D</span></h2>
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  // 主题切换函数
+                  function switchHighlightTheme(isDark) {
+                    const lightTheme = document.getElementById('hljs-light');
+                    const darkTheme = document.getElementById('hljs-dark');
+                    
+                    if (isDark) {
+                      lightTheme.disabled = true;
+                      darkTheme.disabled = false;
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      lightTheme.disabled = false;
+                      darkTheme.disabled = true;
+                      document.documentElement.classList.remove('dark');
+                    }
+                  }
+                  
+                  // 检测主题偏好并应用
+                  const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  switchHighlightTheme(isDarkMode);
+                  
+                  // 监听主题变化
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      switchHighlightTheme(e.matches);
+                    });
+                  }
+                  
+                  // 初始化 Mermaid
+                  mermaid.initialize({
+                    startOnLoad: false,
+                    theme: isDarkMode ? 'dark' : 'default',
+                    themeVariables: {
+                      primaryColor: '#5D5CDE',
+                      primaryTextColor: isDarkMode ? '#e6edf3' : '#24292f',
+                      primaryBorderColor: isDarkMode ? '#30363d' : '#d0d7de',
+                      lineColor: isDarkMode ? '#6e7681' : '#656d76',
+                      secondaryColor: isDarkMode ? '#21262d' : '#f6f8fa',
+                      tertiaryColor: isDarkMode ? '#161b22' : '#ffffff'
+                    },
+                    flowchart: {
+                      useMaxWidth: true,
+                      htmlLabels: true
+                    },
+                    sequence: {
+                      useMaxWidth: true
+                    },
+                    gantt: {
+                      useMaxWidth: true
+                    }
+                  });
+                  
+                  // 渲染 Mermaid 图表
+                  let mermaidCount = 0;
+                  const mermaidElements = document.querySelectorAll('.mermaid-diagram[data-mermaid]');
+                  
+                  mermaidElements.forEach(function(element, index) {
+                    const mermaidCode = element.getAttribute('data-mermaid');
+                    const elementId = 'mermaid-' + (mermaidCount++);
+                    
+                    try {
+                      mermaid.render(elementId, mermaidCode).then(function(result) {
+                        element.innerHTML = result.svg;
+                        console.log('✅ Mermaid 图表渲染成功:', elementId);
+                      }).catch(function(error) {
+                        console.error('❌ Mermaid 图表渲染失败:', error);
+                        element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                      });
+                    } catch (error) {
+                      console.error('❌ Mermaid 图表渲染失败:', error);
+                      element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                    }
+                  });
+                  
+                  // 主题变化时重新渲染 Mermaid
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      mermaid.initialize({
+                        startOnLoad: false,
+                        theme: e.matches ? 'dark' : 'default',
+                        themeVariables: {
+                          primaryColor: '#5D5CDE',
+                          primaryTextColor: e.matches ? '#e6edf3' : '#24292f',
+                          primaryBorderColor: e.matches ? '#30363d' : '#d0d7de',
+                          lineColor: e.matches ? '#6e7681' : '#656d76',
+                          secondaryColor: e.matches ? '#21262d' : '#f6f8fa',
+                          tertiaryColor: e.matches ? '#161b22' : '#ffffff'
+                        }
+                      });
+                      
+                      // 重新渲染所有 Mermaid 图表
+                      mermaidCount = 0;
+                      mermaidElements.forEach(function(element, index) {
+                        const mermaidCode = element.getAttribute('data-mermaid');
+                        const elementId = 'mermaid-' + (mermaidCount++);
+                        
+                        try {
+                          mermaid.render(elementId, mermaidCode).then(function(result) {
+                            element.innerHTML = result.svg;
+                          }).catch(function(error) {
+                            console.error('❌ Mermaid 图表重新渲染失败:', error);
+                          });
+                        } catch (error) {
+                          console.error('❌ Mermaid 图表重新渲染失败:', error);
+                        }
+                      });
+                    });
+                  }
+                  
+                  // 初始化代码高亮
+                  document.querySelectorAll('pre code.hljs').forEach(function(block) {
+                    hljs.highlightElement(block);
+                  });
+                  
+                  // 渲染数学公式
+                  let mathElementsRendered = 0;
+                  let mathElementsTotal = 0;
+                  
+                  // 处理自定义 math-display 标签
+                  const mathDisplayElements = document.querySelectorAll('math-display.math-node');
+                  const mathInlineElements = document.querySelectorAll('math-inline.math-node');
+                  
+                  mathElementsTotal = mathDisplayElements.length + mathInlineElements.length;
+                  
+                  function renderMathElement(element, isDisplay) {
+                    try {
+                      const latex = element.textContent.trim();
+                      if (latex) {
+                        katex.render(latex, element, {
+                          displayMode: isDisplay,
+                          throwOnError: false,
+                          errorColor: '#cc0000',
+                          strict: 'warn',
+                          trust: false,
+                          macros: {
+                            "\\RR": "\\mathbb{R}",
+                            "\\NN": "\\mathbb{N}",
+                            "\\ZZ": "\\mathbb{Z}",
+                            "\\QQ": "\\mathbb{Q}",
+                            "\\CC": "\\mathbb{C}"
+                          }
+                        });
+                      }
+                      mathElementsRendered++;
+                    } catch (error) {
+                      console.error('KaTeX 渲染错误:', error);
+                      element.innerHTML = '<span style="color: red;">数学公式渲染错误: ' + element.textContent + '</span>';
+                      mathElementsRendered++;
+                    }
+                  }
+                  
+                  // 渲染块级数学公式
+                  mathDisplayElements.forEach(function(element) {
+                    renderMathElement(element, true);
+                  });
+                  
+                  // 渲染行内数学公式
+                  mathInlineElements.forEach(function(element) {
+                    renderMathElement(element, false);
+                  });
+                  
+                  // 使用 renderMathInElement 作为备选方案，处理标准 LaTeX 分隔符
+                  renderMathInElement(document.body, {
+                    delimiters: [
+                      {left: '$$', right: '$$', display: true},
+                      {left: '$', right: '$', display: false},
+                      {left: '\\[', right: '\\]', display: true},
+                      {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false,
+                    errorColor: '#cc0000',
+                    strict: 'warn',
+                    trust: false,
+                    macros: {
+                      "\\RR": "\\mathbb{R}",
+                      "\\NN": "\\mathbb{N}",
+                      "\\ZZ": "\\mathbb{Z}",
+                      "\\QQ": "\\mathbb{Q}",
+                      "\\CC": "\\mathbb{C}"
+                    }
+                  });
+                  
+                  // 输出渲染统计
+                  if (mathElementsTotal > 0) {
+                    console.log('✅ KaTeX 数学公式渲染完成:', mathElementsRendered + '/' + mathElementsTotal);
+                  }
+                  if (mermaidElements.length > 0) {
+                    console.log('✅ Mermaid 图表初始化完成, 共', mermaidElements.length, '个图表');
+                  }
+                });
+                </script>
+            </body>
+            </html>
