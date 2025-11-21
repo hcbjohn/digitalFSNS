@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+            <html lang="zh-CN">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>导出的文档</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <!-- FontAwesome CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <!-- Highlight.js CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+                <!-- KaTeX CSS -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+                <!-- Mermaid JS -->
+                <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+                <!-- Highlight.js JS -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+                <!-- KaTeX JS -->
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+                <style>
+            
+          body { 
+            font-family: system-ui, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+          }
+
+          ul,
+          ol {
+            list-style: revert !important;
+            margin: 10px 10px 10px -26px !important;
+            padding: 0 0 0 48px !important;
+          }
+          li {
+            position: relative;
+          }
+          ol ol {
+            list-style: lower-alpha;
+          }
+
+          ol ol ol {
+            list-style: lower-roman;
+          }
+
+          ul.checkbox_list {
+            padding: 0;
+            margin-left: -24px;
+            margin-right: 0;
+          }
+
+
+          ul li,
+          ol li {
+            position: relative;
+            /* white-space: initial; */
+
+            p {
+              white-space: pre-wrap;
+            }
+
+            > div {
+              width: 100%;
+            }
+          }
+
+          ul.checkbox_list > li {
+            display: flex;
+            list-style: none;
+            margin-left:24px;
+            padding-right: 0;
+          }
+
+          ul > li.counter-2,
+          ol li.counter-2 {
+            &::before {
+              left: -50px;
+            }
+          }
+
+          ul > li.hovering::before,
+          ol li.hovering::before {
+            opacity: 0.5;
+          }
+
+          ul li.ProseMirror-selectednode::after,
+          ol li.ProseMirror-selectednode::after {
+            display: none;
+          }
+
+          ul.checkbox_list > li {
+            &::before {
+              left: 0;
+            }
+          }
+          ul.checkbox_list li .checkbox {
+            display: inline-block;
+            cursor: var(--pointer);
+            pointer-events: "initial";
+            opacity: 1;
+            width: 14px;
+            height: 14px;
+            position: relative;
+            top: 1.5px;
+            transition: transform 100ms ease-in-out;
+            opacity: 0.8;
+            margin: 0 0.5em 0 0;
+
+            &[aria-checked="true"] {
+              @apply bg-zinc-800 dark:bg-zinc-400;
+              opacity: 1;
+            }
+
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+          li p:first-child {
+            margin: 0;
+
+          }
+
+
+          .admonition-content p:first-child {
+            margin-top: 0 !important;
+          }
+          .admonition-content p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          blockquote p:first-child {
+            margin-top: 0 !important;
+          }
+          blockquote p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          p:where(:not(table p):not(li p)) {
+              margin-top: 1.1428571em !important;
+              margin-bottom: 1.1428571em  !important;
+          }
+          @media (min-width: 1024px) {
+            p:where(:not(table p):not(li p)) {
+                margin-top: 1.25em  !important;
+                margin-bottom: 1.25em  !important;
+            }
+          }
+            
+          /* Highlight.js 样式覆盖 */
+          .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 1em;
+            background: transparent !important;
+            color: #24292f;
+            font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+          
+          .hljs-pre {
+            margin: 0;
+            background: transparent;
+          }
+          
+          /* 暗黑模式下的高亮主题调整 */
+          .dark .hljs {
+            background: transparent !important;
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 数学公式样式 */
+          .math-node {
+            font-size: 1.1em;
+          }
+          
+          math-display.math-node {
+            display: block;
+            text-align: center;
+            margin: 1.5em 0;
+            padding: 1em;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+          }
+          
+          .dark math-display.math-node {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+          
+          math-inline.math-node {
+            display: inline;
+            margin: 0 2px;
+          }
+          
+          /* KaTeX 渲染后的样式调整 */
+          .katex-display {
+            margin: 0 !important;
+          }
+          
+          .katex {
+            font-size: 1em !important;
+          }
+          
+          /* KaTeX 明暗主题颜色支持 */
+          .katex,
+          .katex * {
+            color: #24292f !important;
+          }
+          
+          .dark .katex,
+          .dark .katex * {
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 分数线和根号等结构元素颜色 */
+          .katex .frac-line {
+            border-bottom-color: #24292f !important;
+          }
+          
+          .dark .katex .frac-line {
+            border-bottom-color: #e6edf3 !important;
+          }
+          
+          .katex .sqrt .sqrt-line {
+            border-top-color: #24292f !important;
+          }
+          
+          .dark .katex .sqrt .sqrt-line {
+            border-top-color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 积分号、求和号等大型符号的颜色 */
+          .katex .delimsizing,
+          .katex .sizing,
+          .katex .vlist-r {
+            color: inherit !important;
+          }
+          
+          /* KaTeX SVG 路径颜色调整 */
+          .katex svg {
+            color: inherit !important;
+          }
+          
+          .katex svg path {
+            fill: currentColor !important;
+          }
+          
+          .dark .katex svg path {
+            fill: #e6edf3 !important;
+          }
+          
+          /* Mermaid 图表样式 */
+          .mermaid-container {
+            text-align: center;
+          }
+          
+          .mermaid-diagram {
+            display: inline-block;
+            max-width: 100%;
+            overflow-x: auto;
+          }
+          
+          .mermaid {
+            max-width: 100%;
+          }
+          
+          /* 响应式调整 */
+          @media (max-width: 768px) {
+            .hljs {
+              font-size: 13px;
+            }
+            
+            math-display.math-node {
+              margin: 1em 0;
+              padding: 0.8em;
+              font-size: 0.9em;
+            }
+            
+            .mermaid-diagram {
+              font-size: 0.9em;
+            }
+          }
+        
+                </style>
+            </head>
+            <body class="bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400">
+                <div class="mx-auto max-w-4xl overflow-auto">
+            <table class="mt-1 w-full rounded-md" data-node-type="table"><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">项目</p></th><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">信息</p></th></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">标准号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">GB 14881</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">年代号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">名称</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准 保健食品良好生产规范</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布部门</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">中华人民共和国国家卫生健康委</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025年  第6号</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2025-09-02</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">实施日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2026-09-02</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文件类型</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准</p></td></tr></table><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">前言</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准代替GB17405—1998《保健食品良好生产规范》。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准与GB17405—1998相比，主要变化如下：<br>——标准名称修改为“食品安全国家标准 保健食品良好生产规范”；<br>——修改了标准结构；<br>——修改了范围；<br>——修改了术语和定义；<br>——修改了选址及厂区环境要求；<br>——修改了厂房和车间要求；<br>——修改了设施与设备要求；<br>——增加了食品安全管理要求；<br>——修改了保健食品原料、辅料及食品相关产品要求；<br>——修改了生产过程的食品安全控制要求；<br>——修改了验证要求；<br>——修改了检验要求；<br>——修改了贮存和运输要求；<br>——增加了产品召回及追溯管理要求；<br>——修改了人员培训要求；<br>——修改了记录和文件管理要求；<br>——增加了附录A不同类别保健食品作业区划分指南。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">1 范围</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准规定了保健食品生产企业的选址及厂区环境、厂房和车间、设施与设备、食品安全管理以及保健食品原料、辅料及食品相关产品、生产过程的食品安全控制、验证、检验、贮存和运输、召回及追溯管理、人员培训、记录和文件管理等的基本要求和管理准则。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准适用于保健食品的生产。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2 术语和定义</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">GB14881、GB16740界定的术语和定义适用于本标准。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3 选址及厂区环境</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">应符合GB14881的相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4 厂房和车间</span></h1><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.1 基本要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">应符合GB14881的相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.2 设计和布局</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2.1 应根据不同剂型形态保健食品的产品特点、生产工艺、生产特性以及生产过程对清洁程度的要求合理划分作业区，一般包括清洁作业区和一般作业区。食品形态的保健食品应符合相应类属食品生产规范中生产区域的划分要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2.2 不同清洁程度的作业区之间应设置有效的分隔，并应分别设置与清洁程度相适应的人流和物流通道等，避免交叉污染。非食品形态保健食品清洁作业区划分部分示例见附录A的表A.1。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2.3 清洁作业区应安装具有过滤装置的独立空气净化系统，并与相邻的非清洁作业区保持正压，防止未净化的空气进入造成交叉污染。清洁作业区控制要求按照表1执行。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2.4 生产工艺中有原料粉碎、提取、纯化等前处理工序的，原料前处理工序应根据产品特性及生产工艺要求合理设计作业区，与成品生产区域进行有效分隔，并分别设置人流物流通道。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.2.5 产尘量大的作业区应有防止粉尘交叉污染的设计，如保持作业区相对负压、使用捕尘或除尘设施设备、在密闭空间内操作等。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 1 清洁作业区控制要求</p><div data-node-type="html_block"><table><tbody><tr><td colspan="2">项目</td><td>要求</td><td>检测方法</td><td>最低监控频次</td></tr><tr><td rowspan="2">悬浮粒子<sup>a</sup></td><td>≥0.5μm</td><td>≤3 520 000个/m3</td><td>GB/T 16292</td><td rowspan="5">应根据产品质量安全控制要求及作业区清洁程度验证情况确定合理监控频次</td></tr><tr><td>≥5μm</td><td>≤29 000个/m3</td><td>GB/T 16292</td></tr><tr><td colspan="2">浮游菌<sup>b</sup></td><td>动态下≤500 CFU/m3或静态下≤150 CFU/m3</td><td>GB/T 16293</td></tr><tr><td colspan="2">沉降菌<sup>b</sup></td><td>动态下≤100 CFU/4 h(Φ90mm)或静态下≤10 CFU/0.5 h(Φ90mm)</td><td>GB/T 16294</td></tr><tr><td colspan="2">换气次数<sup>c</sup></td><td>≥10次/h</td><td>通过风速仪或风量仪测定</td></tr><tr><td colspan="2">清洁作业区与相邻非清洁作业区的压差</td><td>≥10 Pa</td><td>通过压差计测定</td><td>每班</td></tr><tr><td colspan="2">温度<sup>d</sup></td><td>18℃~26℃</td><td>通过温度计量器具测定</td><td>每班</td></tr><tr><td colspan="2">相对湿度<sup>d</sup></td><td>≤65%</td><td>通过湿度计量器具测定</td><td>每班</td></tr><tr><td colspan="5"><br><sup>a</sup>适用于静态。<br><br><sup>b</sup>适用于动态和静态,可根据生产情况选择一种状态检测。<br><br><sup>c</sup>换气次数适用于层高小于4.0m的清洁作业区,层高4.0m以上的清洁作业区可适当调整换气次数,但应确保清洁作业区的清洁程度控制要求。<br><br><sup>d</sup>特殊工序所在生产区域,应根据产品及操作的性质制定温度、相对湿度参数并说明,这些参数不应对规定的清洁程度造成不良影响。<br></td></tr></tbody></table></div><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5 设施与设备</span></h1><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.1 基本要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">应符合GB14881的相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.2 设施</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.2.1 清洁作业区的人流通道入口处应合理设置更衣、换鞋或鞋套、洗手、干手、消毒等设施，物流通道应设置必要的缓冲和清洁设施。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.2.2 对接触食品用水有特殊要求或使用纯化水的，应具有相应的制备设施，并符合生产工艺要求，满足生产需要。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.2.3 应根据生产工艺要求，配备符合要求的除湿、排风、控温等设施。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5.3 设备</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.3.1 生产工艺有原料粉碎、提取、纯化等前处理工序的，应配备与原料前处理相适应的生产设备。提取用溶剂需回收的，应配备相适应且符合相关要求的溶剂回收设备。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.3.2 产品的灌装、装填、密封工序应使用自动化设备完成。因工艺特殊，确实无法采用自动化设备的，应经工艺验证，确保产品符合保健食品质量安全及生产工艺要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.3.3 口服液（主要保健食品原料、辅料为蜂胶、蜂蜜的产品除外）、液态乳类、饮料类等液态保健食品以及原料提取或纯化工序生产中与产品直接接触的设备及管道内壁应配备清洗系统，主要设备管道宜使用原位清洗系统(CIP)。若无法使用原位清洗系统(CIP)而采用其他清洗方法的，应经清洁验证确保设备清洁效果符合质量安全要求。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">6 食品安全管理</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.1 应符合GB14881的相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.2 应遵循危害分析与关键控制点原理建立并有效运行食品安全控制体系。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.3 应建立供应商管理制度，规定供应商的选择、审核和评估程序。应按照评估程序对供应商采用的工艺流程和食品安全控制措施进行评估，必要时应进行定期现场评审或对生产过程进行监控。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.4 应建立并执行保健食品原料、辅料和包装材料的采购、验收、贮存、运输、领用、退库以及保质期管理制度。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.5 应建立中间产品、成品以及不合格品的管理制度，主要包括中间产品的质量要求、贮存条件与期限、标识，成品的放行，不合格品的标识、存放、处理等方面。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.6 应建立生产批次管理制度，明确产品批号和生产日期的设定规则。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.7 应对企业所生产的原料提取物、复配营养素和保健食品成品建立稳定性考察制度，主要包括考察时间点和考察时长、考察项目、检测频率及检验方法、稳定性试验方法、结果评价等方面。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.8 应建立清场管理制度，主要包括清场范围、清场方式、清场周期、清场检查等方面。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">6.9 应建立验证管理制度，主要包括生产相关的厂房、设施、设备的确认以及生产工艺、生产操作规程的验证等方面。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7 保健食品原料、辅料及食品相关产品</span></h1><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7.1 基本要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.1.1 应符合GB14881的相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.1.2 保健食品原料、辅料、包装材料应符合保健食品注册或备案相关技术要求、食品安全标准和企业标准。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.1.3 采购保健食品原料、辅料及包装材料应查验供货者合法资质并索取相关合格证明文件；对无法获得产品有效合格证明文件的保健食品原料、辅料，应按照相应标准或保健食品注册或备案相关技术要求进行检验，合格后方可使用。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.1.4 应根据产品特性选择适宜的包装材料。包装材料应能有效保护产品功效成分或标志性成分的稳定，保证产品质量稳定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7.2 动植物类原料要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.2.1 应按照保健食品注册或备案相关技术要求核查原料真实性。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.2.2 采购依法需要实施检疫的动植物及其产品应索取有效的检疫合格证明文件。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.2.3 对藻类原料供应商审核评估时应索取有效合格的品种鉴定、遗传稳定性等证明材料或报告。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.2.4 自行生产藻类原料的，应按照相关要求建立生产管理体系。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7.3 微生物类原料及非纯化的发酵产物原料要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.3.1 对丝状真菌(子实体除外)、酵母、可用于保健食品的益生菌菌种、非纯化的发酵产物等原料供应商审核评估时应索取菌株或菌种鉴定、遗传稳定性、安全性等证明材料或报告。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.3.2 自行生产丝状真菌(子实体除外)、酵母、可用于保健食品的益生菌菌种、非纯化的发酵产物等原料的，应按照相关要求建立生产管理体系，应使用合格原料进行菌种发酵。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.3.3 菌种或菌株自行培养使用的，应制定保持菌种或菌株特性的措施和方法，并防止杂菌污染、菌种或菌株退化和变异，确保菌种或菌株遗传稳定性。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.3.4 应严格控制微生物类原料保存条件，以保持菌种或菌株的活力。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7.4 原料提取物的要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">采购原料提取物应索取提取物的原料信息、生产工艺信息等内容，并索取有效检验合格证明文件。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">7.5 接触食品用水的要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.5.1 接触食品用水应符合GB5749的相关规定或国家相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.5.2 原料提取加工中原料的清洗、浸润、提取过程以及产品生产加工过程中的接触食品用水有特殊要求的，应符合生产工艺要求或使用纯化水，满足生产需要。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">7.5.3 清洗提取设备和提取容器内表面、清洗直接接触产品的生产设备内表面的接触食品用水应满足清洗要求。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8 生产过程的食品安全控制</span></h1><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.1 基本要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.1.1 应符合GB14881的相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.1.2 应按照产品特性、生产工艺特点以及保健食品注册或备案相关技术要求，制定保健食品生产工艺规程。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.1.3 每批产品应进行物料平衡检查，如果物料平衡检查结果不符合工艺规程或其他文件要求，应按照生产偏差处理要求开展调查处置，查明原因并确保无质量安全隐患，方可放行。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.1.4 清洗清洁后的生产用工具、容器、设备等应有相应的清洁状态标识。每批产品生产结束应按规定程序进行清洁或清场。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.1.5 生产线在切换不同产品生产时，应制定有效控制措施，且经有效清洁或清场，并对清洁清场效果进行验证，防止交叉污染，确保产品切换不对后续产品产生影响。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2 特定工序的控制要求</span></h1><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.1 原料提取物提取工序的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.1 原料提取物应符合保健食品注册或备案相关技术要求，提取步骤、提取溶剂、提取次数、相关工艺参数等应与产品注册或备案相关技术要求一致，保证原料提取物的质量安全。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.2 采用加热提取或浓缩(蒸发)功效成分或标志性成分等工序的，应严格控制加热温度和(或)加热时间等工艺参数。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.3 原料提取物的提取、浓缩、收膏等工序宜采用密闭系统进行操作，管道便于清洁，防止交叉污染。如采用敞口方式进行收膏的，其操作环境应与保健食品生产的清洁程度相适应，或采取相适应的纯化或杀菌措施等。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.4 原料提取物的干燥、粉碎、过筛、混合、内包装等工序，原则上应在清洁作业区或密闭系统内完成，其操作环境应与保健食品生产的清洁程度相适应。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.5 应按照原料提取物质量标准或保健食品注册或备案相关技术要求对每批原料提取物进行关键项目检验，并检查原料提取物提取率或得率，确保其在适当范围内。提取率或得率如有显著差异，应查明原因并确保质量安全符合要求后，方可放行。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.1.6 原料提取物所用提取溶剂不应影响产品的质量安全。提取溶剂如回收，应制定回收操作规程，不应对产品造成交叉污染，必要时增设残留溶剂限度，应对回收溶剂制定与其预定用途相适应的质量标准。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.2 原料前处理工序的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.2.1 原料的前处理工序(如提取、分离、浓缩、杀菌、干燥等)应使原料质量及产品中功效成分或标志性成分符合保健食品注册或备案相关技术要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.2.2 生产工艺中有原料粉碎、提取、纯化等前处理工序的，应有合理的防护措施，避免对成品生产造成影响。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.3 保健食品原料、辅料、包装材料投料使用的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.3.1 保健食品原料、辅料和包装材料的投料使用应有复核过程，确保其品名、规格、数量等内容与生产指令相符。采用计算机信息系统实现自动化控制的，可以不采用人工复核，但计算机信息系统应有防错设计并定期确认。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.3.2 保健食品原料、辅料、与产品直接接触的包装材料应经过物流通道进入生产车间，进入清洁作业区的保健食品原料、辅料、与产品直接接触的包装材料应除去外包装，或采取有效的清洁或消毒措施。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.4 加工过程中的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.4.1 加工过程中有混合工序的，保健食品原料、辅料应混合均匀。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.4.2 加工过程中有热熔、浸膏收膏、蒸煮、化胶、喷粉等工序的，应严格控制温度和时间等工艺参数。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.4.3 片剂、硬胶囊、粉剂、颗粒剂等固态产品需要干燥工序的，应严格按照工艺要求进行控制，如控制干燥温度和时间等，防止颗粒融熔与变质，确保符合保健食品注册或备案相关技术要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.4.4 具有发酵工艺的生产过程，应控制良好的发酵环境。应建立生产环境和加工过程的微生物监控程序，定期对设备、设施、工器具、容器、管道及其附件进行清洁和(或)消毒。生产过程应严格控制发酵参数，包括培养基组成、菌种、温度、湿度(固体发酵时)、压力、时间、 <math-inline class="math-node inline" data-node-type="math_inline">\mathrm{pH}</math-inline> （液体发酵时）、终止发酵判定指标与方法等，防止杂菌污染及有害物质的产生。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.5 中间产品的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.5.1 需要离开生产线进行暂存的中间产品，应按照企业设定的贮存条件和贮存期限进行贮存和使用，并标明名称、批号、数量、贮存期限，保证中间产品及后续成品的质量安全符合生产要求。裸露的中间产品应贮存在符合生产工艺清洁程度要求的环境中，应有相应的防护措施，避免中间产品受到污染。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.5.2 中间产品如需进出所在作业区，需采取有效防护措施，避免中间产品受到污染。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.5.3 应根据产品特性和工艺要求采取控制微生物生长繁殖的措施，比如控制中间产品水分含量、贮存温度、酸碱度或pH、贮存时间等。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.5.4 根据生产工艺需要，在作业区内进行的中间产品检验，应避免对保健食品正常生产过程造成影响。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">8.2.6 灌装或装填的控制要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.6.1 产品灌装或装填时，应检查产品的净含量及允许负偏差、装量差异或重量差异，确保符合保健食品注册或备案相关技术要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.6.2 灌装后需要杀菌的产品，从灌封到杀菌的时间应控制在工艺规程要求的时限内。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">8.2.6.3 应根据工艺要求定期检查封口效果，必要时对封口工艺参数进行监控。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">9 验证</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">9.1 需对生产过程进行验证，以确保整个工艺的重现性及产品质量安全的可控性。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">9.2 应制定验证计划，根据验证对象提出验证项目、制定验证方案，并根据方案组织实施。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">9.3 生产相关的厂房、设施、设备应经确认，生产工艺、生产操作规程应经验证，并保持持续的确认或验证状态。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">9.4 生产一定周期后应进行再确认或再验证。当影响产品质量安全的主要因素，如生产工艺、操作规程、保健食品原料和辅料、与产品直接接触的包装材料、主要生产设备、生产环境(或厂房)及其他因素等发生改变时应进行评估，根据评估情况在必要时进行再确认或再验证。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">9.5 验证工作完成后应编制验证报告，由验证工作负责人审核、批准。验证过程中的数据和分析内容应以文件形式归档保存。验证文件应包括验证方案、验证报告、评价和建议、批准人等。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">10 检验</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">10.1 应符合GB14881的相关规定。<br>10.2 除保健食品原料、辅料和包装材料的验收检验以及成品的检验外，还应根据需要对中间产品进行检验。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">10.3 每批产品应按照企业标准的要求进行出厂检验，检验项目应基于风险评估情况设置，并应包括功效成分或标志性成分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">10.4 每批产品留样至少保存至产品保质期结束。原料提取物和复配营养素留样至少保存至有效使用期限后1年，保存期限不应少于2年。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">11 贮存和运输</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">11.1 应符合GB14881的相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">11.2 仓库中的保健食品原料、辅料、包装材料、中间产品和成品应按规定的保质期或有效使用期限贮存；无规定保质期或有效使用期限的，应根据其稳定性情况确定贮存条件、贮存期限或复验期。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">11.3 企业使用信息化仓储管理系统进行管理的，应确保信息的真实性、安全性和可追溯性。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">12 产品召回及追溯管理</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">应符合GB14881的相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">13 人员培训</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">应符合GB14881的相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">14 记录和文件管理</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">14.1 应符合GB14881的相关规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">14.2 应对企业所生产的原料提取物、复配营养素以及保健食品的生产、检验、销售等环节进行详细记录，记录和文件的保存期限应符合国家有关法律和相关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录A 不同类别保健食品作业区划分指南</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">A.1 一般原则：应与保健食品注册或备案相关技术要求保持一致。产品生产过程无杀菌工艺且产品内包装工序前存在直接接触空气的物料暴露工序的，内包装工序及之前直接接触空气的物料暴露工序应在清洁作业区进行；产品有杀菌工艺的，杀菌工序及之前直接接触空气的物料暴露工序可在一般作业区进行，杀菌工序后直接接触空气的物料暴露工序应在清洁作业区或在密闭设备内进行。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">A.2 可根据产品特点、生产工艺、生产特性以及生产过程对清洁程度的要求和特殊情况调整作业区的划分。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">A.3 原料提取和前处理工序可根据实际生产情况合理设置作业区。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">A.4 非食品形态保健食品的清洁作业区划分部分示例见表A.1。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 A.1 非食品形态保健食品清洁作业区划分部分示例</p><div data-node-type="html_block"><table><tbody><tr><td colspan="2">类别(剂型形态)<sup>a</sup></td><td>清洁作业区的生产工序举例</td></tr><tr><td colspan="2">片剂、硬胶囊、软胶囊、粉剂、颗粒剂等固态产品</td><td>物料称量、过筛、混料、成型、充填、压丸、内包装等</td></tr><tr><td colspan="2">口服液</td><td>灌装<sup>b</sup></td></tr><tr><td rowspan="2">膏剂</td><td>煎膏剂</td><td>配制<sup>c</sup>、灌装</td></tr><tr><td>流浸膏剂</td><td>配制<sup>c</sup>、灌装</td></tr><tr><td colspan="2">茶剂、丸剂</td><td>配制、内包装</td></tr><tr><td colspan="2">酒剂(含酒精度在35%以上的保健食品)<sup>d</sup></td><td>-</td></tr><tr><td colspan="2">有发酵工序的产品</td><td>发酵<sup>e</sup>、灌装</td></tr><tr><td colspan="3"><br><sup>a</sup>本表不涉及原料提取、前处理相关工序的作业区划分。<br><br><sup>b</sup>当灌装工序采用无菌灌装类密闭设备进行时,灌装工序可在一般作业区进行,人员、物料进出及生产操作参照清洁作业区管理。<br><br><sup>c</sup>配制中的关键暴露工序应在清洁作业区。<br><br><sup>d</sup>灌装工序的人员、物料进出及生产操作参照清洁作业区管理。<br><br><sup>e</sup>在密闭设备内进行发酵的发酵工序及灌装后再发酵、传统发酵等发酵工序,可在一般作业区进行。<br></td></tr></tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph"></p>
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  // 主题切换函数
+                  function switchHighlightTheme(isDark) {
+                    const lightTheme = document.getElementById('hljs-light');
+                    const darkTheme = document.getElementById('hljs-dark');
+                    
+                    if (isDark) {
+                      lightTheme.disabled = true;
+                      darkTheme.disabled = false;
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      lightTheme.disabled = false;
+                      darkTheme.disabled = true;
+                      document.documentElement.classList.remove('dark');
+                    }
+                  }
+                  
+                  // 检测主题偏好并应用
+                  const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  switchHighlightTheme(isDarkMode);
+                  
+                  // 监听主题变化
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      switchHighlightTheme(e.matches);
+                    });
+                  }
+                  
+                  // 初始化 Mermaid
+                  mermaid.initialize({
+                    startOnLoad: false,
+                    theme: isDarkMode ? 'dark' : 'default',
+                    themeVariables: {
+                      primaryColor: '#5D5CDE',
+                      primaryTextColor: isDarkMode ? '#e6edf3' : '#24292f',
+                      primaryBorderColor: isDarkMode ? '#30363d' : '#d0d7de',
+                      lineColor: isDarkMode ? '#6e7681' : '#656d76',
+                      secondaryColor: isDarkMode ? '#21262d' : '#f6f8fa',
+                      tertiaryColor: isDarkMode ? '#161b22' : '#ffffff'
+                    },
+                    flowchart: {
+                      useMaxWidth: true,
+                      htmlLabels: true
+                    },
+                    sequence: {
+                      useMaxWidth: true
+                    },
+                    gantt: {
+                      useMaxWidth: true
+                    }
+                  });
+                  
+                  // 渲染 Mermaid 图表
+                  let mermaidCount = 0;
+                  const mermaidElements = document.querySelectorAll('.mermaid-diagram[data-mermaid]');
+                  
+                  mermaidElements.forEach(function(element, index) {
+                    const mermaidCode = element.getAttribute('data-mermaid');
+                    const elementId = 'mermaid-' + (mermaidCount++);
+                    
+                    try {
+                      mermaid.render(elementId, mermaidCode).then(function(result) {
+                        element.innerHTML = result.svg;
+                        console.log('✅ Mermaid 图表渲染成功:', elementId);
+                      }).catch(function(error) {
+                        console.error('❌ Mermaid 图表渲染失败:', error);
+                        element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                      });
+                    } catch (error) {
+                      console.error('❌ Mermaid 图表渲染失败:', error);
+                      element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                    }
+                  });
+                  
+                  // 主题变化时重新渲染 Mermaid
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      mermaid.initialize({
+                        startOnLoad: false,
+                        theme: e.matches ? 'dark' : 'default',
+                        themeVariables: {
+                          primaryColor: '#5D5CDE',
+                          primaryTextColor: e.matches ? '#e6edf3' : '#24292f',
+                          primaryBorderColor: e.matches ? '#30363d' : '#d0d7de',
+                          lineColor: e.matches ? '#6e7681' : '#656d76',
+                          secondaryColor: e.matches ? '#21262d' : '#f6f8fa',
+                          tertiaryColor: e.matches ? '#161b22' : '#ffffff'
+                        }
+                      });
+                      
+                      // 重新渲染所有 Mermaid 图表
+                      mermaidCount = 0;
+                      mermaidElements.forEach(function(element, index) {
+                        const mermaidCode = element.getAttribute('data-mermaid');
+                        const elementId = 'mermaid-' + (mermaidCount++);
+                        
+                        try {
+                          mermaid.render(elementId, mermaidCode).then(function(result) {
+                            element.innerHTML = result.svg;
+                          }).catch(function(error) {
+                            console.error('❌ Mermaid 图表重新渲染失败:', error);
+                          });
+                        } catch (error) {
+                          console.error('❌ Mermaid 图表重新渲染失败:', error);
+                        }
+                      });
+                    });
+                  }
+                  
+                  // 初始化代码高亮
+                  document.querySelectorAll('pre code.hljs').forEach(function(block) {
+                    hljs.highlightElement(block);
+                  });
+                  
+                  // 渲染数学公式
+                  let mathElementsRendered = 0;
+                  let mathElementsTotal = 0;
+                  
+                  // 处理自定义 math-display 标签
+                  const mathDisplayElements = document.querySelectorAll('math-display.math-node');
+                  const mathInlineElements = document.querySelectorAll('math-inline.math-node');
+                  
+                  mathElementsTotal = mathDisplayElements.length + mathInlineElements.length;
+                  
+                  function renderMathElement(element, isDisplay) {
+                    try {
+                      const latex = element.textContent.trim();
+                      if (latex) {
+                        katex.render(latex, element, {
+                          displayMode: isDisplay,
+                          throwOnError: false,
+                          errorColor: '#cc0000',
+                          strict: 'warn',
+                          trust: false,
+                          macros: {
+                            "\\RR": "\\mathbb{R}",
+                            "\\NN": "\\mathbb{N}",
+                            "\\ZZ": "\\mathbb{Z}",
+                            "\\QQ": "\\mathbb{Q}",
+                            "\\CC": "\\mathbb{C}"
+                          }
+                        });
+                      }
+                      mathElementsRendered++;
+                    } catch (error) {
+                      console.error('KaTeX 渲染错误:', error);
+                      element.innerHTML = '<span style="color: red;">数学公式渲染错误: ' + element.textContent + '</span>';
+                      mathElementsRendered++;
+                    }
+                  }
+                  
+                  // 渲染块级数学公式
+                  mathDisplayElements.forEach(function(element) {
+                    renderMathElement(element, true);
+                  });
+                  
+                  // 渲染行内数学公式
+                  mathInlineElements.forEach(function(element) {
+                    renderMathElement(element, false);
+                  });
+                  
+                  // 使用 renderMathInElement 作为备选方案，处理标准 LaTeX 分隔符
+                  renderMathInElement(document.body, {
+                    delimiters: [
+                      {left: '$$', right: '$$', display: true},
+                      {left: '$', right: '$', display: false},
+                      {left: '\\[', right: '\\]', display: true},
+                      {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false,
+                    errorColor: '#cc0000',
+                    strict: 'warn',
+                    trust: false,
+                    macros: {
+                      "\\RR": "\\mathbb{R}",
+                      "\\NN": "\\mathbb{N}",
+                      "\\ZZ": "\\mathbb{Z}",
+                      "\\QQ": "\\mathbb{Q}",
+                      "\\CC": "\\mathbb{C}"
+                    }
+                  });
+                  
+                  // 输出渲染统计
+                  if (mathElementsTotal > 0) {
+                    console.log('✅ KaTeX 数学公式渲染完成:', mathElementsRendered + '/' + mathElementsTotal);
+                  }
+                  if (mermaidElements.length > 0) {
+                    console.log('✅ Mermaid 图表初始化完成, 共', mermaidElements.length, '个图表');
+                  }
+                });
+                </script>
+            </body>
+            </html>
