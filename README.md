@@ -11,6 +11,7 @@ A programme for digitalize National Standard for Food Safety. 一个食品安全
 2. 使标准文本可以轻易复制，并且不会因为pdf统一的文档结构导致复制出的文本带有奇怪的换行
 3. 通过强行OCR绕过部分标准文本复制后编程乱码
 4. 可以利用RAG等技术生成知识库
+5. 标准的修改单直接嵌入至正文中
 
 ## 使用说明
 
