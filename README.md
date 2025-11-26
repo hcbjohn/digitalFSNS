@@ -1,4 +1,4 @@
-# digitalFSNS
+# 食品安全标准数字化 Food Safety National Standards Digitalization
 
 A programme for digitalize National Standard for Food Safety. 一个食品安全国家标准数字化项目。
 
@@ -12,12 +12,23 @@ A programme for digitalize National Standard for Food Safety. 一个食品安全
 3. 通过强行OCR绕过部分标准文本复制后编程乱码
 4. 可以利用RAG等技术生成知识库
 5. 标准的修改单直接嵌入至正文中
+6. 产品标准中检测方法的更新直接嵌入至正文中
 
 ## 使用说明
 
 - [digitalFSNS](https://github.com/hcbjohn/digitalFSNS/tree/main/digitalFSNS)：优化后的标准文件。*.md格式的可以直接打开，也可以下载后打开；*.html格式的请下载后再打开
 
 请pull整个库或者下载整个库的zip文件。
+
+## 路线图
+
+
+1. 通用标准
+2. 生产经营规范
+3. 产品标准
+4. 检验方法
+
+排除已有第三方数据库的标准，如GB 2760、GB 14880、GB 2762等。
 
 ## 关于标准的知识产权
 
