@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+            <html lang="zh-CN">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>导出的文档</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <!-- FontAwesome CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <!-- Highlight.js CSS -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+                <!-- KaTeX CSS -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+                <!-- Mermaid JS -->
+                <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+                <!-- Highlight.js JS -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+                <!-- KaTeX JS -->
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+                <style>
+            
+          body { 
+            font-family: system-ui, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+          }
+
+          ul,
+          ol {
+            list-style: revert !important;
+            margin: 10px 10px 10px -26px !important;
+            padding: 0 0 0 48px !important;
+          }
+          li {
+            position: relative;
+          }
+          ol ol {
+            list-style: lower-alpha;
+          }
+
+          ol ol ol {
+            list-style: lower-roman;
+          }
+
+          ul.checkbox_list {
+            padding: 0;
+            margin-left: -24px;
+            margin-right: 0;
+          }
+
+
+          ul li,
+          ol li {
+            position: relative;
+            /* white-space: initial; */
+
+            p {
+              white-space: pre-wrap;
+            }
+
+            > div {
+              width: 100%;
+            }
+          }
+
+          ul.checkbox_list > li {
+            display: flex;
+            list-style: none;
+            margin-left:24px;
+            padding-right: 0;
+          }
+
+          ul > li.counter-2,
+          ol li.counter-2 {
+            &::before {
+              left: -50px;
+            }
+          }
+
+          ul > li.hovering::before,
+          ol li.hovering::before {
+            opacity: 0.5;
+          }
+
+          ul li.ProseMirror-selectednode::after,
+          ol li.ProseMirror-selectednode::after {
+            display: none;
+          }
+
+          ul.checkbox_list > li {
+            &::before {
+              left: 0;
+            }
+          }
+          ul.checkbox_list li .checkbox {
+            display: inline-block;
+            cursor: var(--pointer);
+            pointer-events: "initial";
+            opacity: 1;
+            width: 14px;
+            height: 14px;
+            position: relative;
+            top: 1.5px;
+            transition: transform 100ms ease-in-out;
+            opacity: 0.8;
+            margin: 0 0.5em 0 0;
+
+            &[aria-checked="true"] {
+              @apply bg-zinc-800 dark:bg-zinc-400;
+              opacity: 1;
+            }
+
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+          li p:first-child {
+            margin: 0;
+
+          }
+
+
+          .admonition-content p:first-child {
+            margin-top: 0 !important;
+          }
+          .admonition-content p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          blockquote p:first-child {
+            margin-top: 0 !important;
+          }
+          blockquote p:last-child {
+            margin-bottom: 0 !important;
+          }
+
+          p:where(:not(table p):not(li p)) {
+              margin-top: 1.1428571em !important;
+              margin-bottom: 1.1428571em  !important;
+          }
+          @media (min-width: 1024px) {
+            p:where(:not(table p):not(li p)) {
+                margin-top: 1.25em  !important;
+                margin-bottom: 1.25em  !important;
+            }
+          }
+            
+          /* Highlight.js 样式覆盖 */
+          .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 1em;
+            background: transparent !important;
+            color: #24292f;
+            font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+          }
+          
+          .hljs-pre {
+            margin: 0;
+            background: transparent;
+          }
+          
+          /* 暗黑模式下的高亮主题调整 */
+          .dark .hljs {
+            background: transparent !important;
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 数学公式样式 */
+          .math-node {
+            font-size: 1.1em;
+          }
+          
+          math-display.math-node {
+            display: block;
+            text-align: center;
+            margin: 1.5em 0;
+            padding: 1em;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+          }
+          
+          .dark math-display.math-node {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+          
+          math-inline.math-node {
+            display: inline;
+            margin: 0 2px;
+          }
+          
+          /* KaTeX 渲染后的样式调整 */
+          .katex-display {
+            margin: 0 !important;
+          }
+          
+          .katex {
+            font-size: 1em !important;
+          }
+          
+          /* KaTeX 明暗主题颜色支持 */
+          .katex,
+          .katex * {
+            color: #24292f !important;
+          }
+          
+          .dark .katex,
+          .dark .katex * {
+            color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 分数线和根号等结构元素颜色 */
+          .katex .frac-line {
+            border-bottom-color: #24292f !important;
+          }
+          
+          .dark .katex .frac-line {
+            border-bottom-color: #e6edf3 !important;
+          }
+          
+          .katex .sqrt .sqrt-line {
+            border-top-color: #24292f !important;
+          }
+          
+          .dark .katex .sqrt .sqrt-line {
+            border-top-color: #e6edf3 !important;
+          }
+          
+          /* KaTeX 积分号、求和号等大型符号的颜色 */
+          .katex .delimsizing,
+          .katex .sizing,
+          .katex .vlist-r {
+            color: inherit !important;
+          }
+          
+          /* KaTeX SVG 路径颜色调整 */
+          .katex svg {
+            color: inherit !important;
+          }
+          
+          .katex svg path {
+            fill: currentColor !important;
+          }
+          
+          .dark .katex svg path {
+            fill: #e6edf3 !important;
+          }
+          
+          /* Mermaid 图表样式 */
+          .mermaid-container {
+            text-align: center;
+          }
+          
+          .mermaid-diagram {
+            display: inline-block;
+            max-width: 100%;
+            overflow-x: auto;
+          }
+          
+          .mermaid {
+            max-width: 100%;
+          }
+          
+          /* 响应式调整 */
+          @media (max-width: 768px) {
+            .hljs {
+              font-size: 13px;
+            }
+            
+            math-display.math-node {
+              margin: 1em 0;
+              padding: 0.8em;
+              font-size: 0.9em;
+            }
+            
+            .mermaid-diagram {
+              font-size: 0.9em;
+            }
+          }
+        
+                </style>
+            </head>
+            <body class="bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400">
+                <div class="mx-auto max-w-4xl overflow-auto">
+            <table class="mt-1 w-full rounded-md" data-node-type="table"><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">项目</p></th><th class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="th"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">信息</p></th></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">标准号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">GB 12695</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">年代号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2016</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">名称</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准 饮料生产卫生规范</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布部门</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">中华人民共和国国家卫生和计划生育委员会</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文号</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2016年 第17号</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">发布日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2015-11-13</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">实施日期</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2016-11-13</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">文件类型</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">食品安全国家标准</p></td></tr><tr class="relative border-b border-zinc-200 dark:border-zinc-700" data-node-type="tr"><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">修改单</p></td><td class="min-w-[100px] px-1 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-400" data-node-type="td"><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">2021年 第8号</p></td></tr></table><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">前言</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准代替GB/T 24154—2009《运动营养食品通则》，整合了QB/T 2831—2006《运动营养食品能量补充食品》、QB/T 2832—2006《运动营养食品蛋白补充食品》、QB/T 2833—2006《运动营养食品能量控制食品》、QB/T 2834—2006《运动营养食品食用肌酸》、QB/T 2895—2007《运动营养食品运动人群营养素》及卫生部2008年18号公告《运动营养食品中食品添加剂和食品营养强化剂使用规定》的相应内容。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准与GB/T 24154—2009相比，主要变化如下：<br>——标准名称修改为“食品安全国家标准 运动营养食品通则”；<br>——明确了“术语和定义”；<br>——修改了“产品分类”的描述，将其按照特征营养素分类和运动项目分类。“补充维生素、矿物质类”与“补充恢复运动性疲劳的营养物质类”归纳入“按运动项目分类”中，删除了“复合营养物质类”、“其他类”；<br>——增加了“感官要求”；<br>——删除了“补充能量类”中“冲调饮用能量补充食品”的技术指标；<br>——修改了“控制能量类”的产品分类；<br>——合并了“补充能量类”、“控制能量类”、“补充蛋白质类”的技术指标；<br>——增加了按运动项目分类产品的技术要求；<br>——增加了“污染物限量”的规定；<br>——增加了“真菌毒素限量”的规定；<br>——增加了“微生物限量”的要求；<br>——修改了营养强化剂的使用规定；<br>——修改了标签的要求；<br>——修改了附录A；<br>——删除了原附录B“不同来源蛋白质的经消化率修正的氨基酸评分(PDCAAS)”;<br>——增加了附录B“肌酸的质量要求及测定方法”。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">1 范围</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">本标准适用于运动营养食品。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2 术语和定义</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">2.1 运动营养食品</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">为满足运动人群(指每周参加体育锻炼3次及以上、每次持续时间 30 min 及以上、每次运动强度达到中等及以上的人群)的生理代谢状态、运动能力及对某些营养成分的特殊需求而专门加工的食品。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3 产品分类</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.1 按特征营养素分类</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：针对能量和蛋白质等的不同需求而设计的运动营养食品，分为三类。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.1.1 补充能量类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">以碳水化合物为主要成分，能够快速或持续提供能量的运动营养食品。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.1.2 控制能量类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">能够满足运动控制体重需求的运动营养食品，含促进能量消耗和能量替代两种。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.1.3 补充蛋白质类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">以蛋白质和/或蛋白质水解物为主要成分，能够满足机体组织生长和修复需求的运动营养食品。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.2 按运动项目分类</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">注：针对不同运动项目的特殊需求而设计的运动营养食品，分为三类。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.2.1 速度力量类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">以肌酸为特征成分，适用于短跑、跳高、球类、举重、摔跤、柔道、跆拳道、健美及力量器械练习等人群使用的运动营养食品。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.2.2 耐力类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">以维生素B&lt;sub&gt;1&lt;/sub&gt;和维生素B&lt;sub&gt;2&lt;/sub&gt;为特征成分，适用于中长跑、慢跑、快走、自行车、游泳、划船、有氧健身操、舞蹈、户外运动等人群使用的运动营养食品。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">3.2.3 运动后恢复类</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">以肽类为特征成分，适用于中、高强度或长时间运动后恢复的人群使用的运动营养食品。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4 技术要求</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.1 基本要求</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">运动营养食品中所使用的原料应符合相应的标准和/或相关规定，不得添加世界反兴奋剂机构禁用物质。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.2 感官要求</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">运动营养食品的色泽、滋味、气味、组织状态、冲调性应符合相应产品的特性，不应有正常视力可见的外来异物。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.3 技术指标</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.3.1 按特征营养素分类的各类产品需满足的技术指标应符合表1的要求。其中补充蛋白质类产品中优质蛋白质所占比例应不低于 50% 。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 1 各类产品的特征营养素技术要求</p><div data-node-type="html_block"><table>
+<tbody>
+<tr>
+<td rowspan="3">项目</td>
+<td colspan="2">补充能量类</td>
+<td colspan="4">控制能量类</td>
+<td colspan="3">补充蛋白质类</td>
+</tr>
+<tr>
+<td rowspan="2">固态</td>
+<td rowspan="2">半固态或液态</td>
+<td colspan="2">促进能量消耗</td>
+<td colspan="2">能量替代</td>
+<td rowspan="2">固态</td>
+<td rowspan="2">半固态或液态</td>
+<td rowspan="2">粉状(需冲调后食用)</td>
+</tr>
+<tr>
+<td>固态</td>
+<td>半固态或液态</td>
+<td>部分代餐</td>
+<td>完全代餐</td>
+</tr>
+<tr>
+<td>能量</td>
+<td>≥1500kJ/100g</td>
+<td>≥150kJ/100g</td>
+<td>≤300kJ/100g</td>
+<td>≤80kJ/100g</td>
+<td>835kJ/餐~1670kJ/餐</td>
+<td>3350kJ/d~5020kJ/d</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>碳水化合物提供的能量占产品总能量的比例/%</td>
+<td>≥60</td>
+<td>≥60</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>蛋白质<sup>a</sup>/(g/100g)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>≥15</td>
+<td>≥4</td>
+<td>≥50</td>
+</tr>
+<tr>
+<td>蛋白质提供的能量占产品总能量的比例/%</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>25~50</td>
+<td>25~50</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>脂肪/(g/100g)</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>≤15</td>
+<td>≤1.5</td>
+<td>≤6</td>
+</tr>
+<tr>
+<td>脂肪提供的能量占产品总能量的比例/%</td>
+<td>-</td>
+<td>-</td>
+<td>≤25</td>
+<td>≤25</td>
+<td>≤25</td>
+<td>≤25</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td colspan="10"><sup>a</sup>蛋白质含量的计算,应以氮(N)×6.25。</td>
+</tr>
+</tbody>
+</table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.3.2 按运动项目分类的各类产品中必须添加成分和建议添加成分应符合表2的要求，其每日使用量应符合表3的要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 2 产品必须添加成分和建议添加成分</p><div data-node-type="html_block"><table>
+<tbody><tr>
+<td rowspan="2">成分</td>
+<td colspan="3">产品分类</td>
+</tr>
+<tr>
+<td>速度力量类</td>
+<td>耐力类</td>
+<td>运动后恢复类</td>
+</tr>
+<tr>
+<td>必须添加成分</td>
+<td>肌酸</td>
+<td>维生素B1、维生素B2</td>
+<td>肽类</td>
+</tr>
+<tr>
+<td>建议添加成分</td>
+<td>谷氨酰胺、β-羟基-β-甲基丁酸钙、1,6-二磷酸果糖</td>
+<td>肽类、左旋肉碱、咖啡因、维生素B6</td>
+<td>谷氨酰胺、L-亮氨酸、L-异亮氨酸、L-缬氨酸</td>
+</tr>
+</tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 3 各类运动项目产品中营养成分的种类和每日使用量</p><div data-node-type="html_block"><table>
+<tbody><tr>
+<td>成分</td>
+<td>每日使用量<sup>a</sup></td>
+<td>参考检验方法</td>
+</tr>
+<tr>
+<td>咖啡因/mg</td>
+<td>20~100</td>
+<td>GB 5009.139</td>
+</tr>
+<tr>
+<td>肌酸/g</td>
+<td>1~3</td>
+<td>附录B</td>
+</tr>
+<tr>
+<td>谷氨酰胺/g</td>
+<td>3.5~15.0</td>
+<td>-</td>
+</tr>
+<tr>
+<td>肽类/g</td>
+<td>1~6</td>
+<td>GB/T 22492</td>
+</tr>
+<tr>
+<td>β-羟基-β-甲基丁酸钙/g</td>
+<td>1~3</td>
+<td>-</td>
+</tr>
+<tr>
+<td>1,6-二磷酸果糖/g ≤</td>
+<td>0.3</td>
+<td>-</td>
+</tr>
+<tr>
+<td>L-亮氨酸/g</td>
+<td>1.5~3</td>
+<td>-</td>
+</tr>
+<tr>
+<td>L-异亮氨酸/g</td>
+<td>0.75~1.5</td>
+<td>-</td>
+</tr>
+<tr>
+<td>L-缬氨酸/g</td>
+<td>0.75~1.5</td>
+<td>-</td>
+</tr>
+<tr>
+<td colspan="3"><sup>a</sup>其他成分含量应符合附录A表A.1的要求。</td>
+</tr>
+</tbody></table></div><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.3.3 如在 4.3.1 和 4.3.2 产品中选择添加或标签中标示含有表 A.1 中的一种或多种成分，其含量应符合表 A.1 的规定。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.4 污染物限量</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">污染物限量应符合表4的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 4 污染物限量</p><div data-node-type="html_block"><table>
+<tbody><tr>
+<td rowspan="2">项目</td>
+<td colspan="2">限量</td>
+<td rowspan="2">检验方法</td>
+</tr>
+<tr>
+<td>固态、半固态或粉状</td>
+<td>液态</td>
+</tr>
+<tr>
+<td>铅/(mg/kg) ≤</td>
+<td>0.5</td>
+<td>0.05</td>
+<td>GB 5009.12</td>
+</tr>
+<tr>
+<td>总砷/(mg/kg) ≤</td>
+<td>0.5</td>
+<td>0.2</td>
+<td>GB 5009.11</td>
+</tr>
+</tbody></table></div><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.5 真菌毒素限量</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">真菌毒素限量应符合表5的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 5 真菌毒素限量</p><div data-node-type="html_block"><table>
+<tbody><tr>
+<td>项目</td>
+<td>限量</td>
+<td>检验方法</td>
+</tr>
+<tr>
+<td>黄曲霉毒素 M1<sup>a</sup>/(μg/kg) ≤</td>
+<td>0.5</td>
+<td>GB 5413.37</td>
+</tr>
+<tr>
+<td>黄曲霉毒素 B1<sup>b</sup>/(μg/kg) ≤</td>
+<td>0.5</td>
+<td>GB/T 18979</td>
+</tr>
+<tr>
+<td colspan="3"><sup>a</sup>仅适用于以乳类及乳蛋白制品为主要原料的产品。<br><sup>a</sup>仅适用于以豆类及大豆蛋白制品为主要原料的产品。</td>
+</tr>
+</tbody></table></div><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.6 微生物限量</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">微生物限量应符合表6的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 6 微生物限量</p><div data-node-type="html_block"><table>
+<tbody><tr>
+<td rowspan="2">项目</td>
+<td colspan="4">采样方案<sup>a</sup>及限量(若非指定,均以CFU/g表示)</td>
+<td rowspan="2">检验方法</td>
+</tr>
+<tr>
+<td>n</td>
+<td>c</td>
+<td>m</td>
+<td>M</td>
+</tr>
+<tr>
+<td>沙门氏菌</td>
+<td>5</td>
+<td>0</td>
+<td>0/25g</td>
+<td>-</td>
+<td>GB 4789.4</td>
+</tr>
+<tr>
+<td>金黄色葡萄球菌</td>
+<td>5</td>
+<td>2</td>
+<td>10</td>
+<td>100</td>
+<td>GB 4789.10平板计数法</td>
+</tr>
+<tr>
+<td colspan="6"><sup>a</sup>样品的分析及处理按GB 4789.1执行。</td>
+</tr>
+</tbody></table></div><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">4.7 食品添加剂和营养强化剂</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.7.1 产品中食品添加剂的使用可参照GB2760中相同或相近食品类别中允许使用的添加剂种类和使用量。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.7.2 产品中如果添加表A.1中的一种或多种营养素，其所使用的营养强化剂化合物来源应符合GB14880附录C的要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">4.7.3 食品添加剂和营养强化剂的质量规格应符合相应的标准和/或有关规定。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">5 标签</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.1 产品标签应符合GB13432的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.2 标签中应在主要展示面标示“运动营养食品”及产品所属分类。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.3 如有不适宜人群，应在标签中标识。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">5.4 对于添加了肌酸的产品应在标签中标示“孕妇、哺乳期妇女、儿童及婴幼儿不适宜食用”。</p><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录A 可选择添加的营养素及含量要求</span></h1><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">运动营养食品可以添加表A.1中的一种或多种营养素，其含量(以每日计)应符合表A.1的要求。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">表 A. 1 运动营养食品可添加的营养素种类及含量</p><div data-node-type="html_block"><table>
+<tbody>
+<tr>
+<td>种类</td>
+<td>含量(以每日计)</td>
+<td>参考检验方法</td>
+</tr>
+<tr>
+<td>维生素A/μg</td>
+<td>120~375</td>
+<td>GB 5413.9或GB/T 5009.82</td>
+</tr>
+<tr>
+<td>维生素D/μg</td>
+<td>1.5~10</td>
+<td>GB 5413.9</td>
+</tr>
+<tr>
+<td>维生素E/(mg α-TE)</td>
+<td>2.1~20</td>
+<td>GB 5413.9或GB/T 5009.82</td>
+</tr>
+<tr>
+<td>维生素B1/mg</td>
+<td>0.2~4</td>
+<td>GB 5009.84</td>
+</tr>
+<tr>
+<td>维生素B2/mg</td>
+<td>0.2~2</td>
+<td>GB 5413.12</td>
+</tr>
+<tr>
+<td>维生素B6/mg</td>
+<td>0.2~2</td>
+<td>GB 5413.13或GB/T 5009.154</td>
+</tr>
+<tr>
+<td>维生素B12/μg</td>
+<td>0.4~4</td>
+<td>GB 5413.14</td>
+</tr>
+<tr>
+<td>维生素C/mg</td>
+<td>15~100</td>
+<td>GB 5413.18</td>
+</tr>
+<tr>
+<td>叶酸/μg</td>
+<td>60~260</td>
+<td>GB 5009.211</td>
+</tr>
+<tr>
+<td>烟酸/mg</td>
+<td>2.1~20</td>
+<td>GB 5413.15或GB/T 5009.89</td>
+</tr>
+<tr>
+<td>生物素/μg</td>
+<td>4.5~50</td>
+<td>GB 5009.259</td>
+</tr>
+<tr>
+<td>泛酸/mg</td>
+<td>0.8~7</td>
+<td>GB 5413.17或GB 5009.210</td>
+</tr>
+<tr>
+<td>钙/mg</td>
+<td>150~800</td>
+<td>GB 5413.21或GB/T 5009.92</td>
+</tr>
+<tr>
+<td>钠<sup>a</sup>/mg</td>
+<td>700~1600</td>
+<td>GB 5009.91</td>
+</tr>
+<tr>
+<td>钾/mg</td>
+<td>300~2000</td>
+<td>GB 5009.91</td>
+</tr>
+<tr>
+<td>镁/mg</td>
+<td>53~300</td>
+<td>GB 5009.241</td>
+</tr>
+<tr>
+<td>铁/mg</td>
+<td>2.3~14</td>
+<td>GB 5413.21或GB/T 5009.90</td>
+</tr>
+<tr>
+<td>锌/mg</td>
+<td>1.7~12</td>
+<td>GB 5009.14</td>
+</tr>
+<tr>
+<td>硒/μg</td>
+<td>7.5~52</td>
+<td>GB 5009.93</td>
+</tr>
+<tr>
+<td>铜/mg</td>
+<td>0.3~1.5</td>
+<td>GB 5009.13</td>
+</tr>
+<tr>
+<td>碘/μg</td>
+<td>22.5~75</td>
+<td>GB 5413.23</td>
+</tr>
+<tr>
+<td>锰/mg</td>
+<td>0.5~2.5</td>
+<td>GB 5009.242</td>
+</tr>
+<tr>
+<td>磷/mg</td>
+<td>105~1000</td>
+<td>GB 5413.22或GB/T 5009.87</td>
+</tr>
+<tr>
+<td>钼/μg</td>
+<td>80~125</td>
+<td>-</td>
+</tr>
+<tr>
+<td>铬/μg</td>
+<td>16~32</td>
+<td>GB 5009.123</td>
+</tr>
+<tr>
+<td>左旋肉碱/g</td>
+<td>1~2</td>
+<td>GB 29989</td>
+</tr>
+<tr>
+<td>牛磺酸/g</td>
+<td>0~0.6</td>
+<td>GB 5009.169</td>
+</tr>
+<tr>
+<td colspan="3"><sup>a</sup>对没有特别添加钠营养素的运动营养食品不做下限要求。</td>
+</tr>
+</tbody>
+</table></div><h1 class="relative text-[2.1428571em] leading-[1.2] mt-[1.66667em] lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">附录B 肌酸的质量要求及测定方法</span></h1><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.1 肌酸的质量要求</span></h2><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">肌酸一水合物的质量分数应不低于 99.97% 。</p><h2 class="relative text-[1.4285714em] leading-[1.4] mt-[1.6em] mb-[0.8em] lg:text-[1.5em] lg:mt-[2em] lg:mb-[1em] lg:leading-[1.3333333] font-[700] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2 肌酸一水合物的测定（高效液相色谱法）</span></h2><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.1 方法提要</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">样品中的肌酸一水合物经高效液相色谱分离、净化，用紫外检测器测定，外标法定量。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.2 试剂和材料</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.1 实验用水：应符合GB/T6682一级水的规定。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.2 甲醇：色谱纯。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.3 流动相：甲醇:水= 40:60</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.4 肌酸一水合物(α-甲基胍乙酸一水合物)标准品：纯度不低于 99.0%</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.5 标准贮备溶液：准确称取肌酸一水合物 (α-甲基胍乙酸一水合物)标准品  0.500 g ，用水溶解并定容至 100 mL 。此标准贮备溶液的浓度为 5.0 mg/mL  。 4℃ 保存。如溶液出现沉淀或浑浊，应重新配制。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.2.6 标准系列溶液：用水将标准贮备溶液分别稀释至0 , 100 μg/mL  , 200 μg/mL , 400 μg/mL , 600 μg/mL , 800 μg/mL , 1000 μg/mL 。临用时配制。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.3 仪器和设备</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.3.1 高效液相色谱仪：配有可调紫外检测器。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">B.2.3.2 色谱柱： ODSC&lt;sub&gt;18&lt;/sub&gt; 柱，粒径 5 μm ，内径4.6 mm ，柱长  250 mm 。</p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.4 分析步骤</span></h3><h4 class="relative mt-[1.4285714em] mb-[0.5714286em] leading-[1.4285714] lg:mt-[1.5em] lg:mb-[0.5em] lg:leading-[1.5] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.4.1 试样溶液的制备</span></h4><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">称取 0.030 g 试样，精确至 0.0001 g 。用水溶解并定容至 100 mL 。</p><h4 class="relative mt-[1.4285714em] mb-[0.5714286em] leading-[1.4285714] lg:mt-[1.5em] lg:mb-[0.5em] lg:leading-[1.5] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.4.2 测定</span></h4><h6 class="relative mt-[1.3em] mb-[0.4714286em] leading-[1.3285714] lg:mt-[1.4em] lg:mb-[0.4em] lg:leading-[1.4] font-[500] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.4.2.1 色谱分离条件</span></h6><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">检测器波长： 220 nm 。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">流动相： 甲醇和水（B.2.2.3）。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">流速： 0.5 mL/min 。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">进样量： 5 μL 。</p><h6 class="relative mt-[1.3em] mb-[0.4714286em] leading-[1.3285714] lg:mt-[1.4em] lg:mb-[0.4em] lg:leading-[1.4] font-[500] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.4.2.2 定量</span></h6><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">用进样器分别吸取 5 μL 标准系列溶液(B.2.2.6)，注入高效液相色谱仪，在上述色谱分离条件</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">(B.2.4.2.1)下测定标准系列溶液的响应峰面积。以响应峰面积为纵坐标，标准系列溶液的浓度为横坐标，绘制标准曲线或计算回归方程。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">吸取 5 μL 试样溶液(B.2.4.1)注入高效液相色谱仪，在上述色谱分离条件(B.2.4.2.1)下测定试样溶液的响应峰面积。依据测定的响应峰面积，在标准曲线上查出(或由回归方程计算出)试样溶液中肌酸一水合物的浓度。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">在上述色谱条件(B.2.4.2.1)下，肌酸一水合物  <math-inline class="math-node inline" data-node-type="math_inline">(\alpha-</math-inline>  甲基胍乙酸一水合物)的出峰时间约为  <math-inline class="math-node inline" data-node-type="math_inline">4.7\mathrm{min}</math-inline>  标准系列溶液的液相色谱示意图见图B.1。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">图B.1 肌酸一水合物(α-甲基胍乙酸一水合物)标准系列溶液的液相色谱示意图。<br><span class="lg:my-[2em] my-[1.7142857em] image-handle no-text-select block" data-node-type="image" style="display: flex; justify-content: center; width: 100%;"><span style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAGnBH4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiimTRmWCSMOyF1Kh1OCuR1HvQBnWniTRL+S9jtNXsp3sc/ahHOp8nHUtzwODz7Go9E8V6F4jaRdI1KG6aMZITIJGcZGQMjPccVw2seEfEXieLT9En03TdK0yxj2S3UU29rsAYEShQGSJiAWBOcY7jnqtETWZry2jvdBs9HstPjKRCG4WXzCQFATCjbGB64J+XgYoA6eiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooqK6uEtLSa5lOI4UaRj7AZNAEtFV7C8j1DTra9hz5VxEkqZ/usAR/OrFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAeY/DrQprrwdDdW+tapYamtxcJOomMiBhM+1Whk3KvybegU4xzXaWP/AAktvfRw35029s2zm6h3wSpwSMxncG5wMhh1ziuR1XxvqvhvR4tfvzpt3DqcebKxgUxTIxUsgLliHUZG84Xbkkelbugt4ls3sD4h1awu5b/INvBB5Yhbaz/I2TvUAYOR3Bz2IB1dFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABWNq3ifTdF1Kx0+8+0faL7f5Ait3cNsUsRkDk4X7oyeRxzWzXHeJ7e4l8eeDbmK1uJYLSa5aeWOFmWMPAyLkgYGWIFAA3xL0JdPubvydTP2OV47yEWTmS129WkX+FcEHPfnHQ46G/wBYtrLQZdXDedbpB50ew/60EZUL6lsgD6iuCeyvTp/xMQWF7u1HzPsY+zP+/wA2wjG3jn5uP16VoRQz6jp/hTQZrbUbeCK2iuLqYWzqFkiVRHGWK4B3/Pz/AM8/cUAWvAGr6rOuq6J4hkV9Z025JkYdHil/eRsPYZZfbZSWElwfizqtk15dtaRabBcR27TuUV2dwxxn0UcdKqappt14e8e6NrdkNTv47qN7HUgIml2xfejf5VwNr5z3wxq5cxT6N8SJdcltbmbTb/TY7YywQtKYZUdiAyKC2CH64wCOcUAaF8r/APCeaRGLm5WGWyupZIVnYIzI0AUlQccB2+ueapfFPUv7K+GOv3G4Kz2pgX3MhCf+zVetmfWPFlvqcVvcRWVjaTW4kuIWiMskjxk7VYBsKIupAB3DGecYfxh8Pap4m8CS2WmS28flSi5uDO7KDGiscDCnJzj06UAWPhHqY1T4XaFLuBaGA2zD08tig/QD867avO/gv4e1Pw54Djg1GS3kS6kF5bGF2bbHIinDZAwc56ZHNeiUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBh23g7w7aa02rwaTbrftu/e4J2lvvFQeFJ5yQBnJ9TVG20PSfDHiGzOj+GnLX5kjmu4DlLRQN2CGPyqx7KAOPpWJd3HxBs9We3udY0S2tZJNtrcvp7mOTJ4ViJPkftg8HsSeKX4fweKp3uLnUPEFvNaQ6pfRT2q2Z3SMJXX5ZGclVDchccDj3oA9EooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK5Dxf4P0LUdP1bVLqzd7w2rt5guJFGVjIHyhgOw7V19YXjG6ntPCWpSW9hNeu1vIhjiZFKgqcsdxAwPzoAk8I/8iXoX/YOt/wD0WtbNY3hH/kS9C/7B1v8A+i1rZoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDH8Va1aeHvC+oarf2zXNpbx5lhUAl1JC4weD171U8DXGk33hK01HRbJ7KyvWe4ELnJDMx3E8nqcnis34uf8kq8Qf9cF/wDQ1o+Ef/JKvD//AFwb/wBDagDtaKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACs3xD/yLOq/9ec3/oBrSrF8Ww3E/hTU1tro2zi2kYuIw+VCHK4Pr60AL4R/5EvQv+wdb/8Aota2axvCP/Il6F/2Drf/ANFrWzQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHPeNgG8KzggEGe3BB7/v46PBIC+FYAAABPcAAdv38lL41/5Faf/rvbf+j46PBX/IrQf9d7n/0fJQB0FFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABWX4kdU8MaqXYKDaSjJOP4DWpWJ4v0+y1LwpqcN9aw3MaW0kipMgYBlQkMAe49aAHeEf+RL0L/sHW//AKLWtmsbwj/yJehf9g63/wDRa1s0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBz/jX/kWJh3Nxb4Hr+/SjwV/yK0H/AF3uf/R8lVfGX/IT8If9hxf/AEnnq14K/wCRWg/673P/AKPkoA6CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK4fx98QB4SutK0+zgS51C9uI1dXBKwws4Uu2O5PC+pB9MUAdxRXKeJPEuoWniPSvDeiQW8mpX6vO8t1kxW8KdWIUgsSeAARzWUPiSbPwjrmoalYqNV0a6NlNawsdk0pICFCeQrbgeeRz1oA9ArC8Yz3sHhLUmsbNLuQ28isjTeXtUqctnBzj071k6X4n1q18VWPh/wAS21ik+o2jXFrLZbtodOZImDE5IByGHB9K6HxD/wAizqv/AF5zf+gGgCDwj/yJehf9g63/APRa1s1jeEf+RL0L/sHW/wD6LWtmgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAOU8Zf8hPwh/2HF/9Jp6seCVNtoD6fIcz2V1NDNjONxcvwT1+V1qv4y/5CfhD/sOL/wCk09W/DH/Hz4h/7Csn/ouOgDoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArw3xppniHTtGW91bTrB7+/121lluYr1mztYiKIKYxtRV4zk8knHNe5VnapoGka2Y/7U022vPLOU8+MPtPqM0AcTczS6f8AGrQ9Q1SOO2/tLRJLBAsm9BOsvmFdxAzweOBmuJ12GS9sPG/iW2Qy2MPiC0lBQZ3pb4WRl9QC3X2Ne23mh6VqGnJp95p1tcWcZBSGaIOqkdCAehqe30+ztLBbC2tIIbNU2LAkYCBfTaOMUAcHrVxDrnxZ8EDT5UnSztbu/leM5AikjCIfxPStzxTot1PpOrXSa/qkMZtZW+zR+T5Ywh45jLYP171saXoGkaGJRpWmWll5pBk+zwqm7HTOBzioPFd5a2XhXU5Lu5ht0a1lRWlcICxQ4AJ7n0oATwj/AMiXoX/YOt//AEWtbNY3hH/kS9C/7B1v/wCi1rZoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDlPGX/IT8If8AYcX/ANJp6t+GP+PnxD/2FZP/AEXHVTxl/wAhPwh/2HF/9Jp6t+GP+PnxD/2FZP8A0XHQB0FFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABWT4ot4bnwvqiTwxyqLWVgHUMAQhwee9a1YXjE6gPCWpf2alq832eTeLl2Vdm07sbQecdO1AEnhH/AJEvQv8AsHW//ota2axvCP8AyJehf9g63/8ARa1s0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBynjL/kJ+EP+w4v/AKTT1b8Mf8fPiH/sKyf+i46qeMv+Qn4Q/wCw4v8A6TT1b8Mf8fPiH/sKyf8AouOgDoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACs3xD/wAizqv/AF5zf+gGtKsXxbZpe+FNTjeWeMLbSPmGVoySEPBKnkeo70AL4R/5EvQv+wdb/wDota2axvCP/Il6F/2Drf8A9FrWzQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHKeMv8AkJ+EP+w4v/pNPVvwx/x8+If+wrJ/6LjqprHPxL8LqeR9i1Bse4Nvz+p/Orfhj/j68Qjv/arn/wAhx0AdBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFcNcfE6wt3e5bTL06PHqB02TUQUKJMDgkpu3hc8Zx+HTIB3NFc9r3iuLR9UsdItrG41HVb0M8VrAVXCL952ZiAo7e5qGDx5osng+78SzNLb2tmWjuoZU/ewyqdpjI/vZIA55yKAOnrC8Y6nZaV4S1Ke/uY7eJ7eSJWc4BdlIA+pqrovjNNS1ePSb/S7vSr6e2F3bRXRQ+dF3wVJww7qeRWr4h/5FnVf+vOb/wBANAEHhH/kS9C/7B1v/wCi1rZrG8I/8iXoX/YOt/8A0WtbNABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAcpq/wDyUzwv/wBeOofzt6NI/wCSmeJ/+vHT/wCdxRq//JTPC/8A146h/O3o0j/kpnif/rx0/wDncUAdXRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFeU/Eg21/4VfXdL1C0utD0u8Wa+0yBAq3UqyDcGkByCCwOMckfSvVq5GT4b6BIZYW+2DTpbn7VJpq3BFs0mc5KDtkA7c4z2oAyLKdZfjo1xJkLc+G0a139SvnZYD+orhdZB/sDxlcgH+zF8YRNMf4cBkEhI7jdtz617JrnhXTteuLO7na4t76yLG3u7SUxyxhhhlyOoI7Gi38JaJbeGZPDq2SvpsqssschLGUscszMeSxPOeuaAOa8U/vPi74DEHMiJfPKV7RmIAZ9t1avi6LxI2m6m1jeaVHp4tZN0c1rI8pHlnPzCQAHrjj0q1ofg3S9BvftsL3d1diBbWOe8nMrRQjpGuegzz6nvV/xD/yLOq/9ec3/oBoAg8I/wDIl6F/2Drf/wBFrWzWN4R/5EvQv+wdb/8Aota2aACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA5TV/wDkpnhf/rx1D+dvRpH/ACUzxP8A9eOn/wA7ijV/+SmeF/8Arx1D+dvRpH/JTPE//Xjp/wDO4oA6uiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArC8Y6bbap4S1KG6WQolvJKPLmeM7lUkcqQSPboa3axfFt7BYeFNTluGdUa2kQbY2fkoccKD+dAC+Ef+RL0L/sHW/8A6LWtmsbwj/yJehf9g63/APRa1s0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBymr/8lM8L/wDXjqH87ejSP+SmeJ/+vHT/AOdxRq//ACUzwv8A9eOofzt6NI/5KZ4n/wCvHT/53FAHV0UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFZviH/AJFnVf8Arzm/9ANaVYvi2K6l8KamtpcrbuLaQszReZldhyMZHX1oAXwj/wAiXoX/AGDrf/0WtbNY3hH/AJEvQv8AsHW//ota2aACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA5TV/8Akpnhf/rx1D+dvRpH/JTPE/8A146f/O4o1f8A5KZ4X/68dQ/nb0+2hew+Jd80m1k1bTY3hKnlPszlXDD3+0pjGejZxxkA6iiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK5K++Iuh6estxMt62nQz/ZptRjty1vHJnaQWHUA8EgEZ4zQB1tFYet+K9O0KeytZhcXN7ek/ZrS0j8yWQAZZgB2A7mmx+MtBfwrJ4kN8semRKTLI6lWjYHBRl6hs8beuaAN6s3xD/yLOq/9ec3/oBqnofi3TtdvJbKKO7tL6OJZza3sJikMTdHAPVc8ex4OKXxjpllqvhLUoL+1juIkt5JVWQZAdVJB+ooAk8I/wDIl6F/2Drf/wBFrWzWN4R/5EvQv+wdb/8Aota2aACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA5tYVvPiNM82SdM0yFrbHG03Ekokz65FvHj0wfWpLz/koejf9gq//wDRtpRZ/wDJQ9Z/7BVh/wCjbui8/wCSh6N/2Cr/AP8ARtpQB0FFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAV5Xrmj2E2m3nw+8MExQTTG51i8kcvHYxswdhlj99scL2GScda9UrzRPhNcxaPd6TH4z1dLK7aRriMRRZlLnLlm27iT3yenHSgCayjiX46NEcGODw2gtATkBPOwSPXtzXCah/wAxi2H/ACC5PH8Czj+Ag8yAn03BfpXruteEINTv9O1OzvJ9M1PT0aKC5t1U/u2GCjKwKle444NQL8P9FPg248NTefNb3LtNPcO/76SYtuMu7H3twB6Y4xjFAGTrfyfG7wq0P+sfTrtZ8f8APMYK59BurS8XarrsGn6tb2vhtrqz+yuPtYvY04MZydh545+uKtaJ4SXS9Xk1i+1O61TU2tltEuLkKvlwg52qqgDk8k9Sa0vEP/Is6r/15zf+gGgCDwj/AMiXoX/YOt//AEWtbNY3hH/kS9C/7B1v/wCi1rZoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDn7P/AJKHrP8A2CrD/wBG3dF5/wAlD0b/ALBV/wD+jbSiz/5KHrP/AGCrD/0bd0Xn/JQ9G/7BV/8A+jbSgDoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACsXxbbzXPhTU0hvJrRhbSMXhVCWAQ5U71YYP0z6EVtVkeKLmC28Lao9xNHEptZVDSMFBJQ4HPegBvhH/AJEvQv8AsHW//ota2axvCP8AyJehf9g63/8ARa1s0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBz9n/wAlD1n/ALBVh/6Nu6Lz/koejf8AYKv/AP0baUWf/JQ9Z/7BVh/6Nu6L4hPiBojt8qNpt9GGPALmS1IX6kKxx6KfSgDoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACsfxVaW174V1SO6t4p0W1lcLKgYBghwcHuPWtisLxi9/H4S1I6dBbzSm3kDLPKYwE2ncQQpyfQY59RQBJ4R/wCRL0L/ALB1v/6LWtmsbwj/AMiXoX/YOt//AEWtbNABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAc/Z/8AJQ9Z/wCwVYf+jbuqnjP/AJCXhD/sOp/6Tz1bs/8Akoes/wDYKsP/AEbd1U8Z/wDIS8If9h1P/SeegDq6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACs3xD/yLOq/9ec3/AKAa0qxfFtp9s8KanH588O22kfdC+0nCHgn0PcUAL4R/5EvQv+wdb/8Aota2axvCP/Il6F/2Drf/ANFrWzQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHK+DyX1Xxc7Esw1powTyQot4SF+gLMce59aTxn/wAhLwh/2HU/9J56PBn/ACEvF/8A2HX/APSeCjxn/wAhLwh/2HU/9J56AOrooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvPNZR7f40+FVW5uWintryRoXmZowwTqFJwOvavQ68/1631aX4peH9Wt9DvprDToLmKaZGi5MgwNoLgkcenegBniWMeJPippHhi8LNpVtp0mqXFtuIS4bzPLQNjqFPOOlctd+INR8MeEfHei2V1KG0y/ittPlZyTBFcFcKGPPygtj04rtvEmk6pZ+ONJ8W6TZNf+VbPYX1rG6rI0LNuVk3EKSrckE1it4A1PXPCPis36pZ6xr12LuKMuG+ziMjyUZhkZ+XkjP3qAFl0mDwF428Hw6Q0iW2pCWxv0LlvtDBNySsD/HuzluuDiuk8W+LfDun6Zq2m3mt6fBfC0kX7PJcKr5ZCVG0nPOR+dZFtp/iDxR4q8O6lrWkNpdvokUkkqyTI/wBouXXb8m1j8i4JycHnpXW+I4Ym8OaqzRIW+xy8lRn7hoAj8I/8iXoX/YOt/wD0WtbNY3hH/kS9C/7B1v8A+i1rZoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigDlPBn/IS8X/APYdf/0ngo8df6PbaJqrcw6dq8E0qj7zBw0AA990ynnsDR4M/wCQl4v/AOw6/wD6TwUfEb/kTZP+v6x/9K4aAOrooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKxfFv2z/AIRTU/sXkeZ9mk3ednG3Yc4x39K2qzfEP/Is6r/15zf+gGgCDwj/AMiXoX/YOt//AEWtbNY3hH/kS9C/7B1v/wCi1rZoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooqrqdq99pV5aRuEeeB4lc5wpZSAePrQBXs/EGjahFdS2eq2VxHaEi4eKdWERH94g8dD19KNH8Q6P4gilk0jUra9SJtrmCQNtPvj6H6157rnhTXvF19Atx4fstJ06yjAmgW5UnUgGVhDuj+5FlcgsM5xx1rq/D4v7vVkuZfDx0O0tLVraOF3jLSFmQ8CMkBV2EDnnceBQB1NFFFABRRRQAUUUUAFFFFAHKeDP+Ql4v8A+w6//pPBR8Rv+RNk/wCv6x/9K4am8FQg6bf6kSfN1LUJrmVR91WUiIBfbbEp57k/SmfEKKSXwZceXGz+Xc2kzhRkhEuY3dvoFUk+woA1td1yx8OaRNqeoO628WBhELM7EgKqqOpJIAFc7N8SbETWVna6NrVzql0Cw04WnlzRIMZZw5UBeQM5wfWt7Wrax1XTraO4l2q9xDNbSrziVWDxn81HB69O9UPEPinw54Yv7OXWLlU1GWJo4ViheSRkJBbCoCduVHX0+tAGvpOqxatatKkM0EkbmOa3nXbJE4AO1gCR0IOQSCCCDzV6ue8MG3vZtU1q01RL621GdXiCJt8lUjVNhB53ZBJyAeeldDQBVv8AU7DS4Vm1C+trSJm2q9xKsak9cZJHPBrGk8f+D4pCj+KNHDDqPtkf+NbGo6XY6tbpBf2sVzEkiyqkqBgGU5Bwai/sDRv+gTYf+Ayf4UAO0rWdP1y1a70y6jurYOYxNEwZGIxnBHXrj8DV6qtlZWVgksVlBFAhkLvHEoVQxAzwOmeD+Oe9WqACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACsLxjp8OpeEtShmkuEVLeSQGCZojkKSASpBI9R0NbtYvi2+trDwpqct1KI0a2kjBIJyxQ4HFAC+Ef+RL0L/sHW/8A6LWtmsbwj/yJehf9g63/APRa1s0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVmeI7m+s/DGq3OmRmS/itJXt0C7i0gUlRjvzjitOszxHfS6Z4X1a/gdY5razmmjdgCAyoSDz7igDl/DfhzUbbSrXVtP8AF2oajd3EYllF7L5trOSMkBcZjGehU8dwelT+HtTe9+IetwhZ7dV0+1ea0kY4jnLyhjjpkqqfMOowak0q/wDFFppVrdT6bZarDcRLOzWBFvMCwBOY3O1jz13j6VsaVrGm6rey+VDLBqKRgSxXNu0UoTPA5HzKCTyCRz1oA2KKKKACiiigAooooAKKKKAOf8Ff8itB/wBd7j/0e9W/E/8AyKes/wDXjP8A+izVTwV/yK0H/Xe4/wDR71c8Sqz+FtXVVLM1lMAAMknYaAGDT01TwtBZySPHvt4yskZw0bgBldfdWAI9xXEpdeNtE8Q3N3P4UtNfuZII7YX1jeJCSiM5+ZHyUJ38gHGRXQ6wyy+CrEma6XTysQvZLEsZRDt527Pm+9tDbeQu6vP7bRPh9rPijTbLwQbuK+Vnku7/AE6aZfs8YjYqzMxILGTYMc5BbNAHqPh231Lbd3+rW0FndXsiubSCTzBEAoUbmwAznHJAxjA5xk7dZWgy6gbKS11R0lvLSTyXnRdqzjAZXx2JDDI6Ag44rVoAyfEGjSa5Yx20epX2nlJlkMtlMYnZR1XI7EE/jisKT4b2Mshd/EHicsep/teUf1q145j1S4sdOttPv59Ot575I768t/8AWRQbWOVP8OWCjd2z6ZrPfwJe6hr8b6x4g1O80izt0W0hW5aB2l3NuaVo9u4gBcHjr7EkA6Pw9oUfh7T5LKK6urpGmaUSXUpkk5xwWPJ6flitasLwrffbLC7iEs08dleS2iTzctKEOMk/xYOVz325rdoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKzfEP/Is6r/15zf+gGtKsXxal3J4U1MWVxDBILaQs0sJkBXYcgAMuCfXPHoaAF8I/wDIl6F/2Drf/wBFrWzWN4R/5EvQv+wdb/8Aota2aACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKgvLO31CynsruJZraeNo5Y26MpGCD+FT1keKdXl0DwtqWrQQCeW0gaRY2JAJHrjt3NAF7TrCHTNPhsbcyeRAuyMO5Yqo6DJ5IA455qG21QXOsX2nfYryI2ixt9oki2xTbwT8jfxYxg+lcjdn4i7dL01bzSUlu5CbjU7e3ZhbqFLbRGxIYnoGyPoOtdBot5eQ6jdaJqV7He3dvDHcLcJF5ZeNy6jcoyAwKHkYBBHHWgDdooooAKKKKACiiigAqC9ma3sLidAC0cTOM9MgE1PWb4hvbfT/D1/c3UnlxLCylsE8t8oHHqSBQBB4ThWHwpppUn99ALhs/3pP3jY9ssce1bNZ+g28tp4d0y2nQpNDaRRyKf4WCAEfnWhQBynw2/5EHTPrN/6Neujmms9PQPNJDbrLIsYLEKGdjhR7kkgD1zXEWPhbT/Eeg6xoV350dpZaxL9j8mRkaDAVhtPHGXbg56/Q1ynibwXplhHp1reQalHdzatZwpNHf3DwTI0yhiuXPlsFzwxyOzNjNAHrekx6pHbzDVpbWWYzyGM26FQIt3yA56sBjJ//XV+s3Q9Ds/D2nmysTcGEuX/AH87ytk4/iYk446VpUANeWOPb5jqu9tq7jjJ9B71HPd21sUFxcRRFzhfMcLuPtnrWJ4w0G517T7FLSSJZrLULe+VZSQsnlPu2ZAOM+uDWFoPhA6vrmta74v0qKe7lumhsre7CTRwWygbdg5XLZJJ6/rQB1ukQapAl3/al7BdF7l3tzDD5flwn7qHk5I55rRrA8Km5SLU7aSyntLO2v5IbFJs5aFQvK5/g3b9v+zjHFb9ABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFcb4z1vU4tb8P+GtGuBa3mrzSGS62B2ggjXc5UHI3HoMgiuyrz7x3u0bxn4U8VTI506yee1vZFUkQLKoCyHHRQRye1AGh4S1rUT4l1/wxq1z9rn0xopbe7ZFRpoZVyNwUAblIwSAAa3/ABD/AMizqv8A15zf+gGuS8GD+2fH3ijxRbhjpk6wWdnNjCziNTvdfVdxwCODWh4v8HeH9R0/VtUu9OSW9Nq7eaXcHKxkDgHHGBQBreEf+RL0L/sHW/8A6LWtmuA8M/DzwpdeFNHuJtIjeWWxhd281+WKAk/erU/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6ukdFkRkdQysMFSMgj0rlf+Fa+EP+gLH/39k/8AiqP+Fa+EP+gLH/39k/8AiqANjw/qdpq+iw3djC8NtukiSNwAV8t2jPAJGMqce2KtRafaQahcX8cCLdXKok0o6uqZ2g/TJ/OucX4Z+DkXamhxKPQSSD/2anL8N/CCsGGixZBzzI5H5bqAOqorg7b4W6EviDUrq406B9PmjhFrAssmY2G/zCRnAzle56dq0f8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOnuJltraWdwSsSFyB1IAzXFeL9Wtte8AWcdmSLnXUgewtnIEkmSkhGM44Xqc4HryKvH4a+DyMHRYiP+usn/wAVTW+GPgxvKzoFv+5G2PDONo/OgDraK5Zfhv4RXONFi5GOZHP/ALNTf+Fa+EP+gLH/AN/ZP/iqAJLi5Hh7xbNdXe2LStShUNdOdscE8ecBuw3qT8xwMoF5LAVctfFmjzw3c013FZxW949mZLqVI1kdQCSpJ5GDVCT4beDpYjHJoVu6FdpDMxyM59eue/WsjS/hJ4aiS+TVNHs7lJL2Sa2AZz5cRxtU9ORg+v1oA7q0vbTULcXFlcw3MJJAkhkDqSOvI4qteaxb2Wr6bpsiSGbUDIIioG1di7ju59PrWJD8NPBtuu2HQbdFwRtDPjn2z+tZmj/Crw/bxXP9qabb3MrXk8kDLLIfLhZyUTqOQuAf5mgDqtc8RaZ4dtoptRnKedIIoY0Rnklc9FVVBJNVLTVfEN5Z/ah4egtsltsF3f7ZsAkDcEjZQSADgMevWqj/AA28HSSGR9BtmbkjJY7c+nPH4U9fh54SRyw0S3yTk5LEfkTxQBUX4iW9oWTXdC1vSJFiWUmSza4Qg5zhod4GMfxbeoOK14PGXhm4t454/EGmbJFDruukU4IyMgnI+hrPPw08HsCDokRB4IMsn/xVV/8AhU3gT/oWrT82/wAaAOxjkSaJJYnV43UMrqchgehB7inVyy/DjwgsAhXQ4AgORhnyO3XOce3SqEHwu8OprF5PLpkLWUkUSwRCaTKOC+8nnvlO/agDuKK5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qj/hWvhD/AKAsf/f2T/4qgDq6K5T/AIVr4Q/6Asf/AH9k/wDiqP8AhWvhD/oCx/8Af2T/AOKoA6uiuU/4Vr4Q/wCgLH/39k/+Ko/4Vr4Q/wCgLH/39k/+KoA6uiuU/wCFa+EP+gLH/wB/ZP8A4qj/AIVr4Q/6Asf/AH9k/wDiqAOrorlP+Fa+EP8AoCx/9/ZP/iqP+Fa+EP8AoCx/9/ZP/iqAOrorlP8AhWvhD/oCx/8Af2T/AOKo/wCFa+EP+gLH/wB/ZP8A4qgDq6K5T/hWvhD/AKAsf/f2T/4qo5/hh4Qnt5YhpIjLoV3xzSBlyMZB3dRQB19Fc8PCzgADxFruB/08r/8AEUv/AAi8n/Qxa5/4Ep/8RQB0FFc//wAIvJ/0MWuf+BKf/EUf8IvJ/wBDFrn/AIEp/wDEUAdBRXIr8NvDkk89xfwXGo3M773nu52LdAMfLgY49Kf/AMK18If9AWP/AL+yf/FUAdXRXKf8K18If9AWP/v7J/8AFUf8K18If9AWP/v7J/8AFUAdXRXKf8K18If9AWP/AL+yf/FUf8K18If9AWP/AL+yf/FUAdXRXKf8K18If9AWP/v7J/8AFUf8K18If9AWP/v7J/8AFUAdXRXKf8K18If9AWP/AL+yf/FUf8K18If9AWP/AL+yf/FUAdXRXKf8K18If9AWP/v7J/8AFUf8K18If9AWP/v7J/8AFUAdXRXKf8K18If9AWP/AL+yf/FUf8K18If9AWP/AL+yf/FUAdXRXKf8K18If9AWP/v7J/8AFUf8K18If9AWP/v7J/8AFUAdXRXKf8K18If9AWP/AL+yf/FUf8K18If9AWP/AL+yf/FUAdXRXKf8K18If9AWP/v7J/8AFUf8K18If9AWP/v7J/8AFUAdXRXKf8K18If9AWP/AL+yf/FVraL4a0fw95/9lWS23n7fM2uzbtucdSfU/nQBq0UUUAFFFFABRRRQAVi+LbyOx8KanJKk7q1tIgEEDynJQ9QgJA9T0Hetqorq3jvLSa2mBMUyNG4BxlSMGgDL8I/8iXoX/YOt/wD0WtbNcHYeG4IvFV3osGrayljZ6davFCmpSjyyzzKR16bY049q3P8AhErb/oLa5/4M5v8A4qgDoKK5/wD4RK2/6C2uf+DOb/4qj/hErb/oLa5/4M5v/iqAOgorn/8AhErb/oLa5/4M5v8A4qqR8Gz/ANtLKNe1j+zRblWg/tGbeZdwIbOem3Ix70AdbRXP/wDCJW3/AEFtc/8ABnN/8VR/wiVt/wBBbXP/AAZzf/FUAdBRXP8A/CJW3/QW1z/wZzf/ABVH/CJW3/QW1z/wZzf/ABVAHQUVyt54NkkltDaa7rUSJOGuA2pSnzI9rfKOeDuKnPsatf8ACJW3/QW1z/wZzf8AxVAHQUVz/wDwiVt/0Ftc/wDBnN/8VR/wiVt/0Ftc/wDBnN/8VQB0FFc//wAIlbf9BbXP/BnN/wDFVV1Lwc8umXUen65rUF60TCCV9SlZUkx8pIzyM4oA6qiuf/4RK2/6C2uf+DOb/wCKo/4RK2/6C2uf+DOb/wCKoA6Ciuf/AOEStv8AoLa5/wCDOb/4qj/hErb/AKC2uf8Agzm/+KoA6Ciuf/4RK2/6C2uf+DOb/wCKrB8F6K2s+E7K/vtZ1t7mXzN7DUpVBxIyjgH0AoA76iuf/wCEStv+gtrn/gzm/wDiqP8AhErb/oLa5/4M5v8A4qgDoKK5/wD4RK2/6C2uf+DOb/4qj/hErb/oLa5/4M5v/iqAOgorkrTwbOmoX73WvaxJau6G0jXUZg0ahAGDHPOWyfoau/8ACJW3/QW1z/wZzf8AxVAHQUVz/wDwiVt/0Ftc/wDBnN/8VR/wiVt/0Ftc/wDBnN/8VQB0FFc//wAIlbf9BbXP/BnN/wDFVVbwc51SKRdc1oWQhdXi/tKXc0hZdrZz0ADDHuKAOqorn/8AhErb/oLa5/4M5v8A4qj/AIRK2/6C2uf+DOb/AOKoA6Ciuf8A+EStv+gtrn/gzm/+Ko/4RK2/6C2uf+DOb/4qgDoKK5W+8GySfZ/seu61DtnVpt2pSnfGPvKOeCfWrX/CJW3/AEFtc/8ABnN/8VQB0FFc/wD8Ilbf9BbXP/BnN/8AFUf8Ilbf9BbXP/BnN/8AFUAdBRXP/wDCJW3/AEFtc/8ABnN/8VWD4w0VtI0Fbqy1nW0mN7aQ5OpSt8sk8aNwT/dY0Ad9RXP/APCJW3/QW1z/AMGc3/xVH/CJW3/QW1z/AMGc3/xVAHQUVz//AAiVt/0Ftc/8Gc3/AMVR/wAIlbf9BbXP/BnN/wDFUAdBRXOTeEI2gkEOsa2spUhGOpzEA44P3qisfBxi0+2jvdc1qe7SJVmlXUpVDuANzAZ4BOTigDqKK5//AIRK2/6C2uf+DOb/AOKo/wCEStv+gtrn/gzm/wDiqAOgorn/APhErb/oLa5/4M5v/iqP+EStv+gtrn/gzm/+KoA6CiuVsfBskSz/AGzXdamLTu0RXUpRtjJ+VTz1A71a/wCEStv+gtrn/gzm/wDiqAOgorn/APhErb/oLa5/4M5v/iqP+EStv+gtrn/gzm/+KoA6Ciuf/wCEStv+gtrn/gzm/wDiqqR+DZF1W4lfXdaaxaGMRQ/2jLuSQF95znkEFPyNAHV0Vz//AAiVt/0Ftc/8Gc3/AMVR/wAIlbf9BbXP/BnN/wDFUAdBRXP/APCJW3/QW1z/AMGc3/xVH/CJW3/QW1z/AMGc3/xVAHQUVwOsaK1n4p8OWMOs62Le+luFnU6lKdwSFmXnPHIFb3/CJW3/AEFtc/8ABnN/8VQB0FFc/wD8Ilbf9BbXP/BnN/8AFUf8Ilbf9BbXP/BnN/8AFUAdBRXP/wDCJW3/AEFtc/8ABnN/8VVLVfBs82nSJpmvaxb3hK7JJNRmZQNwLcZ7rkfjQB1tFc//AMIlbf8AQW1z/wAGc3/xVH/CJW3/AEFtc/8ABnN/8VQB0FFc/wD8Ilbf9BbXP/BnN/8AFUf8Ilbf9BbXP/BnN/8AFUAdBRXPHwjb4ONW1zP/AGE5v/iqqaV4Nmh0m1j1TXdYuL9YwJ5YtRmVXfHJAzwKAOsorn/+EStv+gtrn/gzm/8AiqP+EStv+gtrn/gzm/8AiqAOgorn/wDhErb/AKC2uf8Agzm/+Ko/4RK2/wCgtrn/AIM5v/iqAOgorktK8Gzw6ZDHqmvaxcXg3eZLFqMyq3JxgZ9MCrv/AAiVt/0Ftc/8Gc3/AMVQB0FFc/8A8Ilbf9BbXP8AwZzf/FUf8Ilbf9BbXP8AwZzf/FUAdBRXP/8ACJW3/QW1z/wZzf8AxVYOi6K154l8S2U+s62YLG4gjgA1KUbVaBHPOefmY0Ad9RXP/wDCJW3/AEFtc/8ABnN/8VR/wiVt/wBBbXP/AAZzf/FUAdBRXP8A/CJW3/QW1z/wZzf/ABVH/CJW3/QW1z/wZzf/ABVAHQUVycng2c6zBLHr2sDTlgkWWE6jNvaQldjA54AAcEe4q5/wiVt/0Ftc/wDBnN/8VQB0FFc//wAIlbf9BbXP/BnN/wDFUf8ACJW3/QW1z/wZzf8AxVAHQUVz/wDwiVt/0Ftc/wDBnN/8VVW98HPILf7HrmtRbZ1abdqUp3Rj7yjngn1oA6qiuf8A+EStv+gtrn/gzm/+Ko/4RK2/6C2uf+DOb/4qgDoKK5//AIRK2/6C2uf+DOb/AOKo/wCEStv+gtrn/gzm/wDiqAOgorl77wcZNPuUstb1qG6aJhDI2pTEI+DtJGeQDipo/CMIiQSavrjOFG4jU5uT3/ioA6Kiuf8A+EStv+gtrn/gzm/+Ko/4RK2/6C2uf+DOb/4qgDoKK5//AIRK2/6C2uf+DOb/AOKo/wCEStv+gtrn/gzm/wDiqAOgorgfBuitrHhuO9vdZ1t5zc3UZI1KVflSeRF4B/uqK3v+EStv+gtrn/gzm/8AiqAOgorn/wDhErb/AKC2uf8Agzm/+Ko/4RK2/wCgtrn/AIM5v/iqAOgorn/+EStv+gtrn/gzm/8Aiqq2Xg541n+2a5rUpad2i26lKNsZPyqeeoHegDqqK5//AIRK2/6C2uf+DOb/AOKo/wCEStv+gtrn/gzm/wDiqAOgorn/APhErb/oLa5/4M5v/iqP+EStv+gtrn/gzm/+KoA6CiuVTwc41SeR9c1o2TQxrFF/aUu5ZAX3knPQgp+R9atf8Ilbf9BbXP8AwZzf/FUAdBRXP/8ACJW3/QW1z/wZzf8AxVH/AAiVt/0Ftc/8Gc3/AMVQB0FFc/8A8Ilbf9BbXP8AwZzf/FVTuvBs76jYvba9rEdojP8Aao21GYtICpC7TnjDYNAHWUVz/wDwiVt/0Ftc/wDBnN/8VR/wiVt/0Ftc/wDBnN/8VQB0FFc//wAIlbf9BbXP/BnN/wDFUf8ACJW3/QW1z/wZzf8AxVAHQUVwPjPRW0bwtc31lrOtpcRyQqrHUpW4aVFPBPoTW9/wiVt/0Ftc/wDBnN/8VQB0FFc//wAIlbf9BbXP/BnN/wDFUf8ACJW3/QW1z/wZzf8AxVAHQUVz/wDwiVt/0Ftc/wDBnN/8VSHwjb4ONW1zPb/iZzf/ABVAHQ0VyeleDZodJtY9T13WLi/WJRPLHqMyq745IGeBVz/hErb/AKC2uf8Agzm/+KoA6Ciuf/4RK2/6C2uf+DOb/wCKoPhG3wf+Jtrn/gzm/wDiqAGab4+8JavgWXiLTpGPRGnCOf8AgLYP6V0SurqGRgykZBByDXz/AKX+zUx2tq3iMD+9HaW+fyZj/wCy13WifBbw5ocBjhv9bYsBuIv2iyfpHt/XNAHo9FFFABRRRQAUUUUAFVtRv4dL0y71C5JEFrC80hH91QSf0FWawvGmnzar4I1ywtlLTz2MyRqB95ihwPxNAHJ2XjrxBDa+H9a1qzsI9G125W3iigD+da+Zkws7FiHBA5wq4yK9JrxrU9TtfEfw38B6XYSLJeXd7ZxGJTlo/JH70kei7efrXstABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHNeMdfvdGj0m20+EG51O/jsxO8TSJbhs5dlUgnpgDIHOScCqXh7X9YPjjV/C+rSW139kto7qC7t4jGSrHBV1yQGz0x2FW/G/jCDwjpsDE25vr2XyLRbmYRRB8ZLSOeFRRye/QDrWP4CudDTWtQtLHUotb1i5hW91TVoHV43ckqsYKk4AAOFHQD1NAHf0UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVxnxJ8av4N8OSS2UQn1WZGNvERkKqjLyMP7qj9SB3rs68l+Iei65baL4w1q6bTZ4ri0MELM7iS3th0RVxjJb5ic8nHoKAPTdIupL3RbC7mx5s9vHI+BgZZQT/ADq7WJ4Pa7bwlpZvBbh/ssWzyGLKU2DGcgc1t0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAcjfeIdWv/ABXeeH/D4son0+3Sa8uryNpFDSAlI1RWUkkDJJbgdjW5oFxqt1oVpNrdnHZ6myf6RBE4dUbJHBBPBGD1PWvM7bQfD118YPGMHieCCVriCC5tI7o/umi8vbI4B43KRjd1HOD1rpPhFcXVx8PrZriaWaFZ5o7SWUks8CuQhyeTwMD2AoA7qiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAKeragmk6NfalJG0iWlvJOyL1YIpYge/FefWPjzxAlj4W1m/XSbjTfEF0lqLezRxLbGTO35y5D4wQ3yrg123iq+udM8J6vfWkAuLi3tJZI4iu4MwUkZHce1eLaToVh4Yn+H2v6NqAv7nVLlI7iyba8eZVzLLEgH7op0OAMAAcc5APoCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuS1XxPqenfEDw94fNlaiz1U3J+0eazSYii3Y27QFOSvduM9K62vPvFjAfGH4egkZ26j3/6YCgDW8UeJNQste0bw7osVs2pakXkaa5Vmjt4UGWcqpBYnOAMjnvUnhDxJda1Jq2m6nDDFqukXP2e58jPlyAjckigkkBh2JJGKxPEDrpXxl8NaldMEtL2xn09JW4VZtwdQT6t0A7mneBMX/jvx5rkBD2Vzd21rFIOQ7QRbXIPcZNAHoFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVWv7i4tbOSa2tvtMijIj8wJn8TVmorj/j2l/wBw/wAqAOe8IeKj4i8CWviW6gW3EqSytFGS21Udh+Jwv51zQ+I2rroGkeKWsbB9B1G7WAxRu/2iBWcoGJPysQRyoH0J61c+D8sUHwe0WaZ1jijimZ3c4CqJZCST6YrJm1fTPEs9jr+pukHhvT7qM6Tp8ZHnXs5YKkzJnIUE/KnU8k8cUAeq0UUUAFFFFAGbqmu6do72sd5cok11KsUMW4BnJPUAnoBkk9gDTZtTWHVrgTXEUFjZ2weeSVgq73PGWPTaEJP++K565kTUvi7Zwu37vRtOeZR/02nJUfgI435/2veotfEd18KPE2oyBW+32N1dqWH8JiIiOOx8tY/xoA6pNe0eW4eCPVbFpo4ftDxrcIWWLrvIzwvv0qGbWdPvPD9xf2GuWMduY3VNQEqSQxNgjcTnacHtntXn8um6a2v/AAvBtLYia3nLgoP3n+ihhn1+YA89+az9Tito/CXxWhjSJYo7x2VFACqxhjyQOxJzQB6v/adlZpbwXmp2guHh3gvIqGQAZZwuenf0FT2N/Z6naJd2F3Bd2z52TQSB0bBwcEcHmvP9VtbO7+IHw+WeGCYNZXjYdQ2SI4ip564PIq/8NkiifxhDCFWOPxHchUTgKNkZ4HbnNAHc0UUUAFFFFABRRRQAUUUUAULbQ9Js9Ql1C10uygvZs+bcxW6LI+eu5gMn8av0UUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAVbzTbHUVRb6ytrpUOVE8Svt+mRxSWeladpzO1jYWtqzjDGCFULfXA5oooAt0UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVWvNOstRRUvrO3ukU5VZ4lcA+oyKKKAHWlla2EPk2dtDbxZzshjCLn1wKnoooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAoaloek6yIxqml2V8IzlPtVuku36bgcVdjjSKNY40VEUYVVGAB6AUUUAOooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArNtPD2i6feve2Wj6fbXb53zw2yI7Z65YDJoooA0qKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKyrrwx4fvrz7ZeaFplxdZz501pG7/APfRGaKKALd7ptjqVmbO+sra6tTjMM8Suhx0+UjFSWlpbWFrHa2dvFb28Y2xxQoERB6ADgUUUATUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABVe+sLXUrV7W8hWaB/vI3Q/WiigCjYeGdE0uwnsbHTbe3tJ0KSwIuEZTnIx05yaz7f4d+DrW5iuIPDenRzROHjdYQCrA5BH40UUAdNRRRQAUUUUAMaKNixaNSWXaxI6j0PtyaR7eGSEQvDG0QwAjKCox04oooAj+wWeUP2SDKfd/dj5ec8enNJ/Z1jz/odvz1/dLz+lFFACixswyMLWAMmNp8sZXHp6U6G1t7ckwQRRE9diBc/lRRQB/9k=" alt="image" title="" class="rounded-md" style="width: 100%; height: auto; max-width: 100%;"><span class="dark:text-gray-400" style="text-align: center; margin-top: 4px; font-size: 0.9em; color: rgb(102, 102, 102); width: 100%;">image</span></span></span></p><h3 class="relative text-[1.2857143em] mt-[1.5555556em] mb-[0.4444444em] leading-[1.5555556] lg:text-[1.25em] lg:mt-[1.6em] lg:mb-[0.6em] lg:leading-[1.6] font-[600] text-zinc-800 dark:text-zinc-200" data-node-type="heading"><span class="heading-content">B.2.5 结果计算</span></h3><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">试样中肌酸一水合物的质量分数 W，按式(B.1)计算：</p><math-display class="math-node block text-center my-4 lg:mt-[2em] mb-[0.8em] lg:text-[2.25em] lg:mb-[0.8888889em] lg:leading-[1.1111111] font-[800] text-zinc-800 dark:text-zinc-200" data-node-type="math_display">W = \frac {c \times 100}{m \times 10 ^ {6}} \times 100 \% \tag{B.1}</math-display><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">式中：<br>W  ——肌酸一水合物的质量分数， %；<br>c  ——从标准曲线上查出(或由回归方程计算出)的肌酸一水合物溶液的质量浓度，单位为微克每毫升( μg/mL ) ;<br>100 ——试样的定容体积数，单位为毫升( mL )；<br>m  ——试样的质量，单位为克 ( g ) 。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">计算结果应标示到小数点后1位。</p><p class="break-all text-zinc-700 dark:text-zinc-400" data-node-type="paragraph">同一样品在重复性条件下获得的两次独立测定结果的绝对差值不应超过平均值的  <math-inline class="math-node inline" data-node-type="math_inline">2\%</math-inline>  。</p>
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  // 主题切换函数
+                  function switchHighlightTheme(isDark) {
+                    const lightTheme = document.getElementById('hljs-light');
+                    const darkTheme = document.getElementById('hljs-dark');
+                    
+                    if (isDark) {
+                      lightTheme.disabled = true;
+                      darkTheme.disabled = false;
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      lightTheme.disabled = false;
+                      darkTheme.disabled = true;
+                      document.documentElement.classList.remove('dark');
+                    }
+                  }
+                  
+                  // 检测主题偏好并应用
+                  const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  switchHighlightTheme(isDarkMode);
+                  
+                  // 监听主题变化
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      switchHighlightTheme(e.matches);
+                    });
+                  }
+                  
+                  // 初始化 Mermaid
+                  mermaid.initialize({
+                    startOnLoad: false,
+                    theme: isDarkMode ? 'dark' : 'default',
+                    themeVariables: {
+                      primaryColor: '#5D5CDE',
+                      primaryTextColor: isDarkMode ? '#e6edf3' : '#24292f',
+                      primaryBorderColor: isDarkMode ? '#30363d' : '#d0d7de',
+                      lineColor: isDarkMode ? '#6e7681' : '#656d76',
+                      secondaryColor: isDarkMode ? '#21262d' : '#f6f8fa',
+                      tertiaryColor: isDarkMode ? '#161b22' : '#ffffff'
+                    },
+                    flowchart: {
+                      useMaxWidth: true,
+                      htmlLabels: true
+                    },
+                    sequence: {
+                      useMaxWidth: true
+                    },
+                    gantt: {
+                      useMaxWidth: true
+                    }
+                  });
+                  
+                  // 渲染 Mermaid 图表
+                  let mermaidCount = 0;
+                  const mermaidElements = document.querySelectorAll('.mermaid-diagram[data-mermaid]');
+                  
+                  mermaidElements.forEach(function(element, index) {
+                    const mermaidCode = element.getAttribute('data-mermaid');
+                    const elementId = 'mermaid-' + (mermaidCount++);
+                    
+                    try {
+                      mermaid.render(elementId, mermaidCode).then(function(result) {
+                        element.innerHTML = result.svg;
+                        console.log('✅ Mermaid 图表渲染成功:', elementId);
+                      }).catch(function(error) {
+                        console.error('❌ Mermaid 图表渲染失败:', error);
+                        element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                      });
+                    } catch (error) {
+                      console.error('❌ Mermaid 图表渲染失败:', error);
+                      element.innerHTML = '<div class="text-red-500 p-4">Mermaid 图表渲染失败:<br><pre>' + mermaidCode + '</pre></div>';
+                    }
+                  });
+                  
+                  // 主题变化时重新渲染 Mermaid
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                      mermaid.initialize({
+                        startOnLoad: false,
+                        theme: e.matches ? 'dark' : 'default',
+                        themeVariables: {
+                          primaryColor: '#5D5CDE',
+                          primaryTextColor: e.matches ? '#e6edf3' : '#24292f',
+                          primaryBorderColor: e.matches ? '#30363d' : '#d0d7de',
+                          lineColor: e.matches ? '#6e7681' : '#656d76',
+                          secondaryColor: e.matches ? '#21262d' : '#f6f8fa',
+                          tertiaryColor: e.matches ? '#161b22' : '#ffffff'
+                        }
+                      });
+                      
+                      // 重新渲染所有 Mermaid 图表
+                      mermaidCount = 0;
+                      mermaidElements.forEach(function(element, index) {
+                        const mermaidCode = element.getAttribute('data-mermaid');
+                        const elementId = 'mermaid-' + (mermaidCount++);
+                        
+                        try {
+                          mermaid.render(elementId, mermaidCode).then(function(result) {
+                            element.innerHTML = result.svg;
+                          }).catch(function(error) {
+                            console.error('❌ Mermaid 图表重新渲染失败:', error);
+                          });
+                        } catch (error) {
+                          console.error('❌ Mermaid 图表重新渲染失败:', error);
+                        }
+                      });
+                    });
+                  }
+                  
+                  // 初始化代码高亮
+                  document.querySelectorAll('pre code.hljs').forEach(function(block) {
+                    hljs.highlightElement(block);
+                  });
+                  
+                  // 渲染数学公式
+                  let mathElementsRendered = 0;
+                  let mathElementsTotal = 0;
+                  
+                  // 处理自定义 math-display 标签
+                  const mathDisplayElements = document.querySelectorAll('math-display.math-node');
+                  const mathInlineElements = document.querySelectorAll('math-inline.math-node');
+                  
+                  mathElementsTotal = mathDisplayElements.length + mathInlineElements.length;
+                  
+                  function renderMathElement(element, isDisplay) {
+                    try {
+                      const latex = element.textContent.trim();
+                      if (latex) {
+                        katex.render(latex, element, {
+                          displayMode: isDisplay,
+                          throwOnError: false,
+                          errorColor: '#cc0000',
+                          strict: 'warn',
+                          trust: false,
+                          macros: {
+                            "\\RR": "\\mathbb{R}",
+                            "\\NN": "\\mathbb{N}",
+                            "\\ZZ": "\\mathbb{Z}",
+                            "\\QQ": "\\mathbb{Q}",
+                            "\\CC": "\\mathbb{C}"
+                          }
+                        });
+                      }
+                      mathElementsRendered++;
+                    } catch (error) {
+                      console.error('KaTeX 渲染错误:', error);
+                      element.innerHTML = '<span style="color: red;">数学公式渲染错误: ' + element.textContent + '</span>';
+                      mathElementsRendered++;
+                    }
+                  }
+                  
+                  // 渲染块级数学公式
+                  mathDisplayElements.forEach(function(element) {
+                    renderMathElement(element, true);
+                  });
+                  
+                  // 渲染行内数学公式
+                  mathInlineElements.forEach(function(element) {
+                    renderMathElement(element, false);
+                  });
+                  
+                  // 使用 renderMathInElement 作为备选方案，处理标准 LaTeX 分隔符
+                  renderMathInElement(document.body, {
+                    delimiters: [
+                      {left: '$$', right: '$$', display: true},
+                      {left: '$', right: '$', display: false},
+                      {left: '\\[', right: '\\]', display: true},
+                      {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false,
+                    errorColor: '#cc0000',
+                    strict: 'warn',
+                    trust: false,
+                    macros: {
+                      "\\RR": "\\mathbb{R}",
+                      "\\NN": "\\mathbb{N}",
+                      "\\ZZ": "\\mathbb{Z}",
+                      "\\QQ": "\\mathbb{Q}",
+                      "\\CC": "\\mathbb{C}"
+                    }
+                  });
+                  
+                  // 输出渲染统计
+                  if (mathElementsTotal > 0) {
+                    console.log('✅ KaTeX 数学公式渲染完成:', mathElementsRendered + '/' + mathElementsTotal);
+                  }
+                  if (mermaidElements.length > 0) {
+                    console.log('✅ Mermaid 图表初始化完成, 共', mermaidElements.length, '个图表');
+                  }
+                });
+                </script>
+            </body>
+            </html>
